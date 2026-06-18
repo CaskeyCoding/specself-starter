@@ -1,0 +1,15 @@
+{
+  "$comment": "SpecSelf Starter — Claude Code settings. The SessionStart hook nudges you when a review tier looks overdue, based on the newest dated files in your-life/reviews/. It only prints a reminder; it never writes a review. The date logic is intentionally simple — adapt it to your setup. Remove this block freely if you don't want the nudge.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "latest=$(ls your-life/reviews/ 2>/dev/null | grep -E '^[0-9]{4}' | sort | tail -1); if [ -z \"$latest\" ]; then echo 'SpecSelf: no reviews yet — run GETTING-STARTED.md to seed your life OS.'; else echo \"SpecSelf: latest review is $latest. If a weekly/monthly/quarterly tier is overdue, consider /weekly or /review.\"; fi"
+          }
+        ]
+      }
+    ]
+  }
+}

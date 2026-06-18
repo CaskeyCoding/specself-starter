@@ -1,0 +1,25 @@
+# SpecSelf Starter — keep your life yours.
+#
+# By default we ignore ALL personal content under your-life/ and commit only the
+# structure (READMEs and .gitkeep files). This lets you publish/fork the kit
+# without leaking your corpus. If you keep your whole life in a PRIVATE repo and
+# WANT it versioned, delete the your-life/ rules below — but read
+# steering/privacy.md first.
+
+# --- Personal content (default: not committed) ---
+your-life/**
+!your-life/
+!your-life/**/
+!your-life/**/README.md
+!your-life/**/.gitkeep
+!your-life/README.md
+
+# --- The escape hatch is NEVER committed, no exceptions ---
+**/.sensitive/
+.sensitive/
+
+# --- Local agent / tooling noise ---
+.DS_Store
+*.log
+.env
+.env.*
