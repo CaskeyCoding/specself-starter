@@ -18,6 +18,9 @@ your-life/**
 **/.sensitive/
 .sensitive/
 
+# --- Generated context bundle (contains your corpus; never commit) ---
+context-bundle.md
+
 # --- Local agent / tooling noise ---
 .DS_Store
 *.log

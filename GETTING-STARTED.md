@@ -73,3 +73,40 @@ You're live. From here it's the loop:
 
 The system gets more valuable the longer you run it, because the diff across time
 *is* the insight. Start rough. Revise forever.
+
+## Using your corpus as context (in any Claude chat)
+
+The foundation session and the cadence run best in Claude Code, where the agent
+reads your files directly. But your principles are useful in any conversation, not
+just reflection sessions. Three ways to bring them in, easiest first.
+
+### 1. A Claude Project (best for everyday chats)
+
+Create a Project at claude.ai and add these as Project knowledge:
+
+- `AGENTS.md`, so the assistant inherits the one rule
+- `your-life/vision.md`
+- your committed files under `your-life/principles/`
+
+Every chat in that Project then reasons with your principles in context, with no
+pasting. When your principles change, update the files in the Project.
+
+### 2. Claude Code (best for reflection sessions)
+
+Open this repo with Claude Code and say:
+
+> Read `AGENTS.md` and everything in `steering/`, then load my `your-life/`.
+
+The bundled `.claude/` setup already loads the contract and steering at session
+start, so your corpus is in context. Then run `/daily`, `/weekly`, `/review`.
+
+### 3. One file to paste (quick and portable)
+
+Run `./bundle-context.sh` (Windows: run it from Git Bash). It writes
+`context-bundle.md`: the contract plus your vision and principles in a single
+file. Paste it at the top of any chat, or attach it. The output contains your
+corpus, so it is gitignored by default. Never commit it.
+
+Whichever path you use, the rule holds: the assistant may read and question
+everything in your context, but you author the record. It never rewrites a
+principle.
