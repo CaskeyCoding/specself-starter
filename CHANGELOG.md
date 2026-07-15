@@ -21,6 +21,18 @@ never affected.
 
 *Nothing yet.*
 
+## [0.2.1] — 2026-07-15
+
+### Added
+
+- `scripts/coherence.py`: stdlib-only runnable coherence report implementing the
+  mechanical checks from `steering/coherence.md` (orphan, starvation, capacity,
+  staleness, revealed/aspirational drift) over a `your-life/` or `examples/`
+  corpus, with a `--today` flag for reproducible runs. The contradiction check
+  is deliberately deferred to persona review; it has no mechanical rule, and the
+  script says so rather than inventing one. `steering/coherence.md` gained a
+  one-line pointer to the script.
+
 ## [0.2.0] — 2026-07-15
 
 The response to the 2026-07-15 external deep review (ADR-008 in the parent

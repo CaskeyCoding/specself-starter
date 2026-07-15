@@ -41,6 +41,8 @@ is either a mistake or a deliberate orphan — flag it either way.
 
 Run these in order. Each produces findings, never edits.
 
+These checks are runnable: `scripts/coherence.py`.
+
 ### 1. Orphan check (upward)
 For every `active` **project**, is there a `serves:` link to an `active` goal?
 For every `active` **goal**, does it serve the vision or a principle?
