@@ -14,6 +14,10 @@ own private repo. No server, no account, no keys to lose.
 
 > "Specs for the self." The discipline you'd apply to a system, applied to a life.
 
+"Spec" here means exactly what it means in software: a dated, versioned
+statement of intent that reality gets checked against. Your principles and
+goals are written as specs; the reviews are the tests.
+
 ---
 
 ## The one rule
@@ -24,6 +28,30 @@ own private repo. No server, no account, no keys to lose.
 Every design choice in this kit serves that rule. It is what makes it safe to
 hand an agent your whole life. See [`steering/philosophy.md`](steering/philosophy.md).
 
+## See it work
+
+This is not an abstract framework. After a few weeks of use, a weekly review
+ends like this: a short report that names the gaps you would otherwise miss,
+followed by one question worth sitting with.
+
+<!-- source: steering/coherence.md -->
+
+```
+Coherence, 2026-05-30 (weekly)
+
+Orphans:       1  (project: redesign-portfolio → no goal)
+Contradictions:1  (goal: double-client-load x principle: protect-deep-work)
+Starved areas: 1  (health, 0 evidence in 21d)
+Over-capacity: yes (7 active projects, 5 stalled)
+Stale:         1  (goal: learn-piano, recommend contested)
+Drift:         1  (aspirational → revealed candidate: give-feedback-i-d-want)
+
+Top question this week: You have 7 active projects and starved health for
+3 weeks. What comes off the list?
+```
+
+The agent surfaces and challenges here; it never authors your record.
+
 ## The spine: horizons of focus
 
 Your daily actions connect all the way up to who you want to be. The agent's
@@ -32,7 +60,7 @@ no goal, the goal that contradicts a principle, the area you've starved all week
 
 | Horizon | Artifact | Lives in |
 |---|---|---|
-| **5 — Purpose & Principles** | what you stand for | `your-life/principles/`, `aspirational.md` |
+| **5 — Purpose & Principles** | what you stand for | `your-life/principles/`, `your-life/aspirational.md` |
 | **4 — Vision** (3–5 yr) | who you're becoming | `your-life/vision.md` |
 | **3 — Goals** (6–24 mo) | outcomes with success criteria | `your-life/goals/` |
 | **2 — Areas** (ongoing) | roles & standards to maintain | `your-life/areas/` |
@@ -42,13 +70,14 @@ no goal, the goal that contradicts a principle, the area you've starved all week
 See [`steering/coherence.md`](steering/coherence.md) for how the agent checks
 alignment across horizons.
 
-## Quickstart (5 minutes)
+## Get started (setup: 5 minutes; first session: 60-90 minutes)
 
-1. **Use this template** (or clone it) into a new private repo.
+1. **Use this template** (or clone it) into a new private repo. (~5 minutes)
 2. Open it with your agent. Tell it:
    > "Read `AGENTS.md` and everything in `steering/`, then walk me through `GETTING-STARTED.md`."
-3. Do the **foundation session** once — the agent interviews you and seeds the
-   stack with your first principles, vision, areas, and goals.
+3. Do the **foundation session** once (budget 60-90 minutes, per
+   `GETTING-STARTED.md`): the agent interviews you and seeds the stack with
+   your first principles, vision, areas, and goals.
 4. Run the loop from there: `/daily` capture, `/weekly` review, monthly+ deep
    sessions. The agent reminds; you reflect.
 
@@ -62,6 +91,9 @@ specself-starter/
 ├── AGENTS.md            The operating contract (works with any agent)
 ├── CLAUDE.md            Claude Code accelerators (subagents, slash commands)
 ├── GETTING-STARTED.md   The one-time foundation session
+├── CHANGELOG.md         Structure changes, versioned (for upgrading a fork)
+├── UPGRADING.md         Pull kit improvements without touching your corpus
+├── examples/            A fictional worked corpus — see the system alive
 ├── steering/            The method — your agent reads this every session
 │   ├── philosophy.md    The contract: you decide, the agent organizes
 │   ├── methodology.md   Two-axis principles + the horizons model + lifecycle
@@ -79,9 +111,34 @@ specself-starter/
 
 The kit is plain markdown. `AGENTS.md` is the agent-neutral contract — point any
 capable agent at it. If you use **Claude Code**, the `.claude/` directory adds
-accelerators: each persona becomes a subagent, each review tier becomes a slash
-command (`/daily`, `/weekly`, `/capture`, `/review`, `/coherence-check`), and a
-SessionStart hook nudges you when a tier is overdue.
+accelerators: each persona becomes a subagent, each cadence tier becomes a skill
+(`/foundation`, `/daily`, `/weekly`, `/monthly`, `/quarterly`, `/annual`) with
+`/capture` and `/coherence-check` as helpers, plus a SessionStart nudge and a
+privacy guard that blocks committing your corpus or secrets.
+
+## The hosted companion (optional)
+
+There is a hosted SpecSelf app, and it is deliberately **narrower** than this
+kit: a principles + journal engine (the foundation interview, daily capture,
+weekly and monthly reviews, principle synthesis, and a principles-scope
+coherence report). It does not manage goals, areas, projects, or habits, and
+it will not grow those surfaces; this repo layout is the wider system of
+record. The app speaks the same contracts this kit defines (the schemas,
+personas, prompts, and question bank here are the single source it vendors),
+and it exports your corpus in exactly this kit's `your-life/` shape, so you
+can start hosted and graduate to your own repo, or ignore the app entirely.
+The kit is the whole method; the app is one convenient engine for part of it.
+
+## Upgrading after you've diverged
+
+The kit is a starting point, not a dependency — but when upstream ships a better
+template or a new skill, you can pull those **structure** improvements without
+losing your edits and **without ever touching your `your-life/` corpus**. Add the
+starter as an `upstream` remote, then run the **`/upgrade`** skill (or
+`bash .claude/skills/upgrade/upgrade-diff.sh upstream/main`): it's a dry run that
+shows what changed in the structure and lets you apply each file you want, one at a
+time. [`CHANGELOG.md`](CHANGELOG.md) tracks what changed; [`UPGRADING.md`](UPGRADING.md)
+walks the flow with a worked example.
 
 ## License & attribution
 
@@ -89,3 +146,7 @@ SpecSelf Starter is offered for you to fork and adapt. Suggested licensing:
 MIT for the scaffolding/code, CC-BY for the method docs. Pick what fits before
 you publish a fork. The method here is the structure and the prompts — your
 principles and your life are entirely your own.
+
+As shipped, this repository carries only the MIT license (the scaffolding as
+released). The CC-BY-for-method-docs split above is an option the forker
+implements, not something already in place here.

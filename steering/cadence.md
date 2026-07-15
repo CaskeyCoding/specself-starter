@@ -20,12 +20,14 @@ computation — produces *context*, never *content*.
 
 ## The tiers
 
+Canonical tier names live in `schemas/enums.yaml#tier`; this table describes what each does, the schema is the machine-readable source.
+
 | Tier | Frequency | Duration | Consumes | Produces | Lead personas |
 |---|---|---|---|---|---|
 | **Daily** | daily | ~2 min | yesterday's actions, today's intent | one journal entry | Journalist |
 | **Weekly** | weekly | ~20 min | the week's entries | weekly review + candidate updates | Journalist + Coach |
 | **Monthly** | monthly | ~60 min | the month's reviews & evidence | candidate principles/goals, coherence pass | Skeptic, Therapist, rotating |
-| **Quarterly** | quarterly | ~90 min | the quarter's artifacts | falsification sweep, status transitions | Skeptic, Forensic-Auditor |
+| **Quarterly** | quarterly | ~90 min | the quarter's artifacts | falsification sweep, goal audit, status transitions | Skeptic, Forensic-Auditor, Stoic (goal audit) |
 | **Annual** | yearly | half day | the year's corpus | blank-slate rewrite, retirements | Future-Self, Biographer |
 
 ## What each tier does
@@ -53,7 +55,9 @@ nothing without your sign-off.
 Falsification sweep across all `active` principles and goals. Any artifact with
 no new supporting evidence this quarter is auto-flagged `contested` (a
 recommendation — you confirm). Transition statuses. This is the primary pruning
-tier.
+tier. The Stoic leads the **goal audit** here: goals get stress-tested on their
+own axis, not only through the principles. The cut-two test, the borrowed
+ambition question, the goal your calendar quietly disagrees with.
 
 ### Annual (half day)
 Blank-slate rewrite. Re-derive your principles from scratch without looking at

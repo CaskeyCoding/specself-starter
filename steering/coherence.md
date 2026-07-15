@@ -32,6 +32,8 @@ serves: [goal:ship-side-business-v1]      # this project ladders up to a goal
 serves: [vision, principle:bias-to-shipping]   # this goal serves the vision + a principle
 ```
 
+Refs resolve by file basename, per `templates/README.md`.
+
 These links are the graph the check walks. An artifact with an empty `serves:`
 is either a mistake or a deliberate orphan — flag it either way.
 
@@ -68,7 +70,9 @@ items is a coherence failure — nothing actually moves.
 
 ### 5. Staleness check (the pruning loop)
 Any artifact past its cadence with no new evidence is a candidate for
-`contested`. This is where breadth gets pruned back to what's alive.
+`contested`. This is where breadth gets pruned back to what's alive. Where
+this doc says "retire," read "move to the type's terminal state" (see
+`templates/README.md`).
 
 > *Finding:* "Goal `learn-piano` has no evidence in 2 quarters. Recommend
 > `contested`. Retire, revive, or re-scope?"

@@ -1,0 +1,88 @@
+# Principle schema — frontmatter fields and body sections
+#
+# The machine-readable shape of `templates/principle.md` (ADR-009 Decision
+# 2). There is NO `id:` field: the file basename is the identifier
+# (ADR-008 D2, see `templates/README.md`). Enum values referenced below
+# live in `enums.yaml`, not restated here.
+
+artifact: principle
+identified_by: basename
+
+frontmatter:
+  title:
+    type: string
+    required: true
+    notes: >-
+      Human-readable display title, free text (not a slug duplicate,
+      ADR-008 D2).
+  status:
+    type: enum
+    enum_ref: enums.yaml#status
+    required: true
+  kind:
+    type: enum
+    enum_ref: enums.yaml#kind
+    required: true
+  domain:
+    type: enum
+    enum_ref: enums.yaml#domain
+    required: true
+  confidence:
+    type: enum
+    enum_ref: enums.yaml#confidence
+    required: true
+  serves:
+    type: list
+    item_type: reference
+    reference_format: "type:slug"
+    required: false
+    notes: >-
+      Higher-horizon artifacts this principle supports. Usually empty;
+      H5 is the top of the horizons stack. See `templates/README.md`
+      for the `type:slug` reference format.
+  created:
+    type: date
+    required: true
+  last_reviewed:
+    type: date
+    required: true
+  supersedes:
+    type: list
+    item_type: reference
+    reference_format: "principle:slug"
+    required: false
+  ended_on:
+    type: date
+    required: false
+    notes: >-
+      Set the date this principle enters a terminal state (ADR-008 D4).
+      Required iff status is a terminal state for this type (`retired`,
+      per the per-type table in `templates/README.md`).
+
+body_sections:
+  - name: Why
+    required: true
+    notes: What this principle protects or produces.
+  - name: Evidence
+    required: true
+    notes: >-
+      Concrete, dated instances. Must be real for `kind: revealed`;
+      for `kind: aspirational`, evidence is expected to still be missing.
+  - name: Falsification
+    required: true
+    notes: >-
+      The specific evidence that would force this to `contested` or
+      `retired`. Mandatory per steering/methodology.md.
+  - name: Tensions
+    required: true
+    notes: Which other principles this can collide with, and how.
+
+# consumer_notes — the app-side mapping (ADR-009 Decision 3). The stored
+# principle is additive to this schema, not a subset restatement of it.
+consumer_notes:
+  app_field_mapping:
+    created_at: created
+    id: "maps to the export file's basename, not a stored value here"
+  app_only_fields:
+    - source_session_id
+    - body_md

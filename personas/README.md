@@ -35,8 +35,10 @@ In Claude Code, each persona also exists as a subagent in
 | **Forensic-Auditor** | Reads passive trails (calendar, spend) and reports the gap | quarterly |
 | **Biographer** | Narrative and through-line across the years | annual |
 
-The first six ship as full persona files in this kit. Auditor and Biographer are
-sketched here and easy to expand — copy `_template.md` and write the lens.
+All nine ship as full persona files in this kit. One primary lens leads a
+session (the tier table in `steering/cadence.md` names the leads); the
+Journalist may always ride secondary as the fact-check. More than two active
+lenses in one session dilutes all of them.
 
 ## Writing your own
 
@@ -44,3 +46,16 @@ Copy [`_template.md`](_template.md). A good persona has: a sharp, single **lens*
 a few **signature moves** (the questions only it asks); clear **distinctions** from
 neighboring personas; and **pairing rules**. Vague personas produce vague
 sessions — give it a real angle.
+
+## The machine contract
+
+Each `personas/<name>.md` file opens with a YAML frontmatter block: `spine`,
+`tiers`, `cooldown_days`, `exclusive_with`, `domains`, `priority_per_tier`, and
+`voice_prompt` (field definitions in [`../schemas/persona.schema.yaml`](../schemas/persona.schema.yaml)).
+This is the machine contract the hosted app vendors (ADR-009 Decision 4): one
+kit file now carries both the lens prose and the values a selection algorithm
+needs, instead of the two drifting independently. `exclusive_with` must be
+symmetric, if persona A excludes persona B, B's frontmatter excludes A too,
+and this is enforced by test on both sides. The kit frontmatter records the
+full method contract, including tiers the hosted app cannot serve yet; app
+eligibility is only ever a subset of what a kit file declares.

@@ -1,9 +1,9 @@
 ---
-id: vision
-status: active              # draft | active | retired (superseded by a rewrite)
+status: active              # draft | active | contested | retired
 horizon: 3-5yr
 created: YYYY-MM-DD
 last_reviewed: YYYY-MM-DD
+ended_on:                   # set with a date when status enters a terminal state
 supersedes: []
 ---
 

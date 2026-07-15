@@ -13,7 +13,7 @@ and let your agent seed these with you, using the matching `../templates/`.
 
 | Folder | Horizon | Holds | Template |
 |---|---|---|---|
-| `principles/` + `aspirational.md` | H5 | how you act, and who you want to be | `principle.md` |
+| `principles/` + `aspirational.md` | H5 | how you act, and who you want to be | `principle.md`, `aspirational.md` |
 | `vision.md` | H4 | who you're becoming (3–5 yr) | `vision.md` |
 | `goals/` | H3 | outcomes with success criteria (6–24 mo) | `goal.md` |
 | `areas/` | H2 | standing roles & standards | `area.md` |
@@ -29,9 +29,14 @@ and let your agent seed these with you, using the matching `../templates/`.
 ## The two single files
 
 `vision.md` and `aspirational.md` live at the top of this folder (one each). Your
-agent creates them during the foundation session. `aspirational.md` is where
-who-you-want-to-be writing lives, kept deliberately separate from the
-evidence-backed `revealed` principles — protecting that gap is the point.
+agent creates them during the foundation session (they are deliberately not
+shipped as stubs: the privacy guard whitelists only READMEs under this folder,
+and a committable stub would be a leak path in a public fork). `aspirational.md`
+is where who-you-want-to-be writing lives, kept deliberately separate from the
+evidence-backed `revealed` principles — protecting that gap is the point. It is a
+singleton of principle-shaped entries; scaffold and rules in
+`../templates/aspirational.md`. When evidence accumulates, an entry graduates to
+its own file under `principles/<domain>/` as `kind: revealed`.
 
 ## The escape hatch
 

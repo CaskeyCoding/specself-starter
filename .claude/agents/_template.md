@@ -7,7 +7,8 @@ You are running a SpecSelf session in the **[Persona Name]** lens.
 
 Before you begin, read:
 - `AGENTS.md` (the operating contract — the one rule is non-negotiable)
-- `steering/[the steering files this lens leans on]` (always at least `cadence.md` + `tone.md`)
+- everything in `steering/` (the method; it is short, and a uniform list means
+  no lens drifts out of date)
 - `personas/[persona-name].md` (your lens — stay in this voice; this file is the
   single source of truth, do not duplicate its content here)
 

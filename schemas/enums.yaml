@@ -1,0 +1,71 @@
+# Enum schema — single source of truth
+#
+# This file is the canonical, machine-readable list of every enum the kit
+# uses. `specself-api` vendors a copy under `src/contracts/` and a test
+# asserts its hardcoded enums match this file exactly (ADR-009 Decision 2).
+# Kit templates and steering docs point at this file instead of restating
+# values; edit values here first, then update the pointer sites.
+#
+# See `templates/README.md` for how these enums attach to each artifact
+# type (status per-type table, `serves:` references, dates).
+#
+# `_shared/tooling/schema_drift_report.py` reports drift/staleness between
+# this file (and personas/) and consumers' vendored copies (SEAM-14,
+# report-only, always exits 0).
+
+# domain — the two-axis framework's domain axis (steering/methodology.md).
+# `core` is reserved for cross-domain principles.
+domain:
+  - core
+  - work
+  - relationships
+  - health
+  - money
+  - integrity
+  - learning
+
+# tier — the five reflection tiers (steering/cadence.md). `daily` carries
+# `selection_eligible: false`: the hosted app's selection Tier enum
+# deliberately has no daily, because daily capture bypasses selection.
+# SEAM-2's drift test asserts "schema tiers minus daily == API Tier enum".
+tier:
+  - name: daily
+    selection_eligible: false
+  - name: weekly
+    selection_eligible: true
+  - name: monthly
+    selection_eligible: true
+  - name: quarterly
+    selection_eligible: true
+  - name: annual
+    selection_eligible: true
+
+# status — the base lifecycle (ADR-008 D3). Per-type terminal states are
+# documented in `templates/README.md`, not restated here; this is the
+# shared four-state base every artifact starts from.
+status:
+  - draft
+  - active
+  - contested
+  - retired
+
+# kind — the principle kind axis (steering/methodology.md): revealed
+# (evidence-backed) vs aspirational (not yet lived).
+kind:
+  - revealed
+  - aspirational
+
+# confidence — how strongly a principle is held (templates/principle.md).
+confidence:
+  - low
+  - medium
+  - high
+
+# evidence_type — the six evidence categories (templates/evidence.md).
+evidence_type:
+  - proud
+  - regret
+  - conflict
+  - admired
+  - disliked
+  - surprise

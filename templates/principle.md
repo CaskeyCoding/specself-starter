@@ -1,15 +1,17 @@
 ---
-id:
-title:                      # kebab-case-slug, an actionable rule not a virtue word
+title:                      # display title, free text (the filename is the id)
 status: draft               # draft | active | contested | retired
 kind: revealed              # revealed (evidence-backed) | aspirational (not yet lived)
 domain: core                # core | work | relationships | health | money | integrity | learning
 confidence: medium          # low | medium | high
-serves: []                  # higher-horizon ids this supports (usually empty — H5 is the top)
+serves: []                  # type:slug refs this supports (see templates/README.md); usually empty — H5 is the top
 created: YYYY-MM-DD
 last_reviewed: YYYY-MM-DD
-supersedes: []              # ids of principles this replaces
+ended_on:                   # set with a date when status enters a terminal state
+supersedes: []              # type:slug refs to principles this replaces (see templates/README.md)
 ---
+
+Field definitions and enum values are canonical in `schemas/principle.schema.yaml` and `schemas/enums.yaml`; this template does not restate them.
 
 # [The principle as one actionable sentence]
 

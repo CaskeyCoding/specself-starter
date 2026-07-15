@@ -1,12 +1,23 @@
 {
-  "$comment": "SpecSelf Starter — Claude Code settings. The SessionStart hook nudges you when a review tier looks overdue, based on the newest dated files in your-life/reviews/. It only prints a reminder; it never writes a review. The date logic is intentionally simple — adapt it to your setup. Remove this block freely if you don't want the nudge.",
+  "$comment": "SpecSelf Starter — Claude Code settings. SessionStart computes per-tier overdue (weekly/monthly/quarterly/annual) from your-life/reviews/ filenames and prints one line per tier that's overdue; it stays silent when everything is current, and it only prints — it never writes a review. PreToolUse runs the privacy guard before any git commit/push and BLOCKS it when the change includes private your-life/ corpus or a secret — your life stays yours. The guard checks paths, so editing .gitignore does not bypass it; its agent-independent twin is the pre-commit hook (.pre-commit-config.yaml). Remove either block freely.",
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "latest=$(ls your-life/reviews/ 2>/dev/null | grep -E '^[0-9]{4}' | sort | tail -1); if [ -z \"$latest\" ]; then echo 'SpecSelf: no reviews yet — run GETTING-STARTED.md to seed your life OS.'; else echo \"SpecSelf: latest review is $latest. If a weekly/monthly/quarterly tier is overdue, consider /weekly or /review.\"; fi"
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-.}\"/scripts/overdue.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/guard-corpus-commit-hook.sh"
           }
         ]
       }

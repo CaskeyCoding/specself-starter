@@ -1,6 +1,5 @@
 ---
-id: ADR-NNN
-title:                      # kebab-case-slug
+title:                      # display title, free text (the filename ADR-NNN-kebab-title.md carries the id)
 status: accepted            # proposed | accepted | superseded
 date: YYYY-MM-DD
 supersedes: []

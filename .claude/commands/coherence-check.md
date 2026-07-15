@@ -15,3 +15,5 @@ report, change nothing.
 4. End with the single most important tension as one sharp question.
 
 Do not edit any file or flip any status. Surface; the human decides.
+
+This standalone check is ephemeral by design (conversation output only, nothing written to disk); the persisted trail is the Coherence report section inside weekly+ review files.

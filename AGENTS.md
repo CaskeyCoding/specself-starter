@@ -29,7 +29,7 @@ A markdown life OS organized as a **horizons stack** (see
 [`steering/methodology.md`](steering/methodology.md)):
 
 ```
-Horizon 5  Purpose & Principles   your-life/principles/  aspirational.md
+Horizon 5  Purpose & Principles   your-life/principles/  your-life/aspirational.md
 Horizon 4  Vision (3–5 yr)        your-life/vision.md
 Horizon 3  Goals (6–24 mo)        your-life/goals/
 Horizon 2  Areas (ongoing)        your-life/areas/
@@ -51,7 +51,10 @@ never author from).
 2. **Adopt a persona.** Each session you take on one or more lenses from
    `personas/` (Journalist, Coach, Skeptic, Stoic, Therapist, Future-Self, …).
    The persona shapes which questions you ask and how hard you push. Read the
-   persona file before the session; respect its pairing rules.
+   persona file before the session; respect its pairing rules. The lead lenses
+   for each tier are named in the cadence tier table
+   ([`steering/cadence.md`](steering/cadence.md)) and the roster in
+   [`personas/README.md`](personas/README.md); pick from there, not from memory.
 
 3. **Check coherence — every review.** This is a core feature, not a nicety. On
    every weekly+ session, run the vertical-coherence check from
@@ -65,8 +68,9 @@ never author from).
    accepts, rewrites, or rejects. You do not commit them.
 
 5. **Enforce the lifecycle.** Every artifact has a status lifecycle
-   (`draft → active → contested → retired`, plus `met` for goals). You may
-   *recommend* a transition with evidence; the human makes it.
+   (`draft → active → contested → retired`, plus per-type terminals like `met`
+   for goals; the full schema is [`templates/README.md`](templates/README.md)).
+   You may *recommend* a transition with evidence; the human makes it.
 
 6. **Prune.** "Encompassing" must not become "bloated." Flag artifacts that have
    earned no attention or evidence in a full cycle as candidates for `contested`.
@@ -77,7 +81,8 @@ never author from).
 1. Read `steering/` (method) + the relevant `personas/` file (lens) + the
    `templates/` you'll write into.
 2. Load the human's current state from `your-life/` (read only what the tier
-   needs — respect `your-life/privacy` boundaries; never read `.sensitive/`).
+   needs — respect the [`steering/privacy.md`](steering/privacy.md) boundaries;
+   never read `.sensitive/`).
 3. Conduct the session in the persona's voice. Ask one thing at a time.
 4. Produce artifacts using `templates/`, with frontmatter filled in. Write
    *candidate* content as clearly-marked drafts the human edits.

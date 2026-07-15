@@ -24,7 +24,8 @@ Supporting (cross-horizon): `habit` (recurring commitment), `decision` (life-ADR
 Every non-ground artifact carries a `serves:` frontmatter field naming the
 higher-horizon artifact(s) it ladders up to. That field is what makes the
 [coherence check](coherence.md) possible. An artifact that serves nothing is
-either a mistake or a missing link — the agent flags it.
+either a mistake or a missing link — the agent flags it. References are
+`type:slug` and resolve to a file basename (see `templates/README.md`).
 
 ## The two-axis framework (principles)
 
@@ -40,11 +41,15 @@ Principles — the top horizon — are positioned on two orthogonal axes.
 **The gap between the two sets is the most useful signal this system produces.**
 Never collapse an aspirational principle into the revealed set without evidence;
 doing so launders a wish into a fact and defeats the project. The axis lives in
-the `kind:` frontmatter field.
+the `kind:` frontmatter field. Aspirational principles collect in the singleton
+`your-life/aspirational.md` (scaffold: `templates/aspirational.md`) until
+evidence graduates them into their own file under `principles/<domain>/`.
 
 ### Domain axis
 
 `core | work | relationships | health | money | integrity | learning`
+
+Canonical values live in `schemas/enums.yaml#domain`; this section explains the axis, the schema is the machine-readable source.
 
 These seven are sensible defaults, **not law** — edit them in your own corpus to
 fit your life. `core` is reserved for cross-domain principles. Keep `core`
@@ -69,9 +74,15 @@ draft ──► active ──► contested ──► retired
 | `contested` | Evidence has emerged that challenges it; pending falsification |
 | `retired` | Replaced or falsified; kept in the corpus for the audit trail |
 
-Goals add one terminal state: **`met`** (the success criteria were satisfied —
-recorded with the date and the evidence). Projects add **`shipped`** and
-**`abandoned`**. Habits use `active | lapsed | retired`.
+All types share this base cycle. Goal adds one terminal state, **`met`** (the
+success criteria were satisfied). Project adds **`shipped`** and
+**`abandoned`**. Habit replaces `contested` with **`lapsed`**: the lapse
+itself is the challenging evidence, so there's no separate contested state to
+pass through. Decisions keep their own vocabulary, `proposed | accepted |
+superseded`, mirroring software ADRs rather than this lifecycle. Every
+terminal transition (`met`, `shipped`, `abandoned`, `retired`, `superseded`)
+is dated in the `ended_on:` field. The full per-type enum table lives in
+`templates/README.md`.
 
 ## Falsification is required
 

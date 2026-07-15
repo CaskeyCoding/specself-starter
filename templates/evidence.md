@@ -2,8 +2,10 @@
 type:                       # proud | regret | conflict | admired | disliked | surprise
 date: YYYY-MM-DD
 domain:                     # core | work | relationships | health | money | integrity | learning
-related: []                 # principle/goal ids this evidence bears on
+related: []                 # type:slug refs this evidence bears on (see templates/README.md)
 ---
+
+Enum values for `type` and `domain` are canonical in `schemas/enums.yaml`; this template does not restate them.
 
 # [Short title for the instance]
 

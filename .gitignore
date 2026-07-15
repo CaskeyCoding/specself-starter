@@ -7,16 +7,21 @@
 # steering/privacy.md first.
 
 # --- Personal content (default: not committed) ---
+# >>> specself privacy mode — managed by scripts/set-privacy-mode.sh
 your-life/**
 !your-life/
 !your-life/**/
 !your-life/**/README.md
 !your-life/**/.gitkeep
 !your-life/README.md
+# <<< specself privacy mode
 
 # --- The escape hatch is NEVER committed, no exceptions ---
 **/.sensitive/
 .sensitive/
+
+# --- Generated context bundle (contains your corpus; never commit) ---
+context-bundle.md
 
 # --- Local agent / tooling noise ---
 .DS_Store

@@ -1,12 +1,13 @@
 ---
-id:
-title:                      # kebab-case-slug
-status: active              # draft | active | shipped | abandoned | contested
+title:                      # display title, free text (the filename is the id)
+status: active              # draft | active | contested | shipped | abandoned | retired
 horizon: weeks-months
-serves: []                  # goal:<id> and/or area:<id> this project ladders up to
+serves: []                  # type:slug refs this ladders up to (see templates/README.md)
 created: YYYY-MM-DD
 target_date: YYYY-MM-DD
+last_reviewed: YYYY-MM-DD
 last_moved: YYYY-MM-DD       # date of last real progress — feeds the staleness check
+ended_on:                   # set with a date when status enters a terminal state
 ---
 
 # [Project title — the finite outcome]

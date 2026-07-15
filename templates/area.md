@@ -1,11 +1,11 @@
 ---
-id:
-title:                      # kebab-case-slug, e.g. health, money, partnership, craft
-status: active              # active | retired
+title:                      # display title, free text (the filename is the id), e.g. health, money, partnership, craft
+status: active              # draft | active | contested | retired
 horizon: ongoing
-serves: []                  # principle:<id>(s) this area upholds, if any
+serves: []                  # type:slug refs this area upholds, if any (see templates/README.md)
 created: YYYY-MM-DD
 last_reviewed: YYYY-MM-DD
+ended_on:                   # set with a date when status enters a terminal state
 ---
 
 # [Area name]

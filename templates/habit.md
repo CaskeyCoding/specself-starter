@@ -1,11 +1,11 @@
 ---
-id:
-title:                      # kebab-case-slug
-status: active              # active | lapsed | retired
+title:                      # display title, free text (the filename is the id)
+status: active              # draft | active | lapsed | retired
 cadence:                    # e.g. daily, 3x/week, weekly
-serves: []                  # area:<id> or principle:<id> this habit upholds
+serves: []                  # type:slug refs this habit upholds (see templates/README.md)
 created: YYYY-MM-DD
 last_reviewed: YYYY-MM-DD
+ended_on:                   # set with a date when status enters a terminal state
 ---
 
 # [Habit — the recurring commitment]

@@ -1,3 +1,18 @@
+---
+# Machine contract — see schemas/persona.schema.yaml for field definitions.
+spine: false # true only for a permanent-roster persona (currently: journalist)
+tiers: [] # subset of schemas/enums.yaml#tier this persona is deployed at
+# cooldown_days: 0 # minimum days between two sessions this persona leads; omit if unknown
+# exclusive_with: [] # persona basenames this one must not co-lead with; mirror on both sides
+# domains: [] # subset of schemas/enums.yaml#domain this persona is weighted toward
+# priority_per_tier: # optional lead-selection priority per tier
+#   weekly: 0
+voice_prompt: >-
+  The runtime voice guidance for this persona, distilled from its own
+  lens and signature moves below. Write it in second person ("You are
+  the ___") and keep it tight, it rides in a system prompt every turn.
+---
+
 # [Persona Name] — Lens
 
 **Deploy at:** [tiers]

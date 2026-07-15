@@ -1,0 +1,59 @@
+# Persona contract schema — field definitions only
+#
+# The machine contract a `personas/<name>.md` frontmatter block will carry
+# (ADR-009 Decision 4). This schema defines the fields; it does not fill
+# them in for any persona (that is SEAM-4). The prose lens body stays as
+# is. Enum values referenced below live in `enums.yaml`.
+
+artifact: persona
+identified_by: basename
+
+frontmatter:
+  spine:
+    type: boolean
+    required: true
+    notes: >-
+      Whether this persona is a permanent fixture of the roster (as
+      opposed to a situational or optional lens).
+  tiers:
+    type: list
+    item_type: enum
+    enum_ref: enums.yaml#tier
+    required: true
+    notes: >-
+      Which cadence tiers this persona can be deployed at. The kit
+      frontmatter records the method contract, including tiers the
+      hosted app cannot serve yet; API eligibility must be a subset of
+      this list (ADR-009 Decision 4).
+  cooldown_days:
+    type: integer
+    required: true
+    notes: Minimum days between two sessions led by this persona.
+  exclusive_with:
+    type: list
+    item_type: reference
+    reference_format: "persona-basename"
+    required: false
+    notes: >-
+      Personas that must not co-lead a session with this one. Must be
+      symmetric (if A excludes B, B excludes A); enforced by test on
+      both sides.
+  domains:
+    type: list
+    item_type: enum
+    enum_ref: enums.yaml#domain
+    required: false
+    notes: Domains this persona is weighted toward, if any.
+  priority_per_tier:
+    type: map
+    key_type: enum
+    key_enum_ref: enums.yaml#tier
+    value_type: integer
+    required: false
+    notes: Lead-selection priority per tier, where multiple personas compete.
+  voice_prompt:
+    type: string
+    required: true
+    notes: >-
+      The runtime voice guidance for this persona, the single source
+      of truth for how it speaks in a session.

@@ -1,0 +1,107 @@
+# The daily prompt pool, upstreamed verbatim from specself-web
+# (src/app/principles/daily/page.tsx, POOL + pickTodaysPrompts, origin/master
+# 2026-07-15). The app rotates a pool instead of three fixed cards because
+# fixed cards stop holding attention; the kit adopts the same pool so kit and
+# app users see the same prompts on the same day (ADR-009 Decision 5).
+#
+# Fields per entry match the app's Prompt shape exactly: id, heading,
+# subheading, hint, placeholder. Do not edit prompt text here without also
+# updating the app; this file is downstream of it.
+
+per_day: 3
+
+# Deterministic date-window rule, matching the app's pickTodaysPrompts:
+#
+#   dayIndex = floor(epoch_ms(date) / 86400000)     # days since epoch, UTC
+#   start = ((dayIndex * per_day) mod len(pool) + len(pool)) mod len(pool)
+#   today's prompts = pool[start], pool[(start+1) mod len(pool)], pool[(start+2) mod len(pool)]
+#
+# Not random: the same date always produces the same three prompts, on both
+# the kit and the app. Each day's window advances by per_day, so consecutive
+# days are disjoint before any wraparound repeat.
+selection: >-
+  dayIndex = floor(epoch_ms(date) / 86400000); start = ((dayIndex * per_day)
+  mod pool_length + pool_length) mod pool_length; today's prompts are
+  pool[start .. start + per_day - 1], wrapping mod pool_length.
+
+pool:
+  - id: DLY-01
+    heading: "Decision"
+    subheading: "one decision you made yesterday or are avoiding today"
+    hint: "a moment, not a category."
+    placeholder: "What did you decide, or not decide?"
+  - id: DLY-02
+    heading: "Friction"
+    subheading: "one thing that didn't go the way you wanted"
+    hint: "who or what was the actual obstacle?"
+    placeholder: "Where did something resist?"
+  - id: DLY-03
+    heading: "Surprise"
+    subheading: "one thing that surprised you, good or bad"
+    hint: "what did you not predict?"
+    placeholder: "What caught you off-guard?"
+  - id: DLY-04
+    heading: "Avoided"
+    subheading: "the thing you kept not doing today"
+    hint: "what does leaving it cost?"
+    placeholder: "What did you step around?"
+  - id: DLY-05
+    heading: "Energy"
+    subheading: "when your energy was highest, and what you spent it on"
+    hint: "did the spend match the value?"
+    placeholder: "Where did the good hours go?"
+  - id: DLY-06
+    heading: "Tension"
+    subheading: "a moment you felt pulled two ways"
+    hint: "which two values were competing?"
+    placeholder: "Where were you of two minds?"
+  - id: DLY-07
+    heading: "Proud"
+    subheading: "the smallest thing you did well today"
+    hint: "what standard did it meet?"
+    placeholder: "What would you do again exactly?"
+  - id: DLY-08
+    heading: "Said"
+    subheading: "something you said you wish you'd said differently"
+    hint: "what was the truer version?"
+    placeholder: "What came out wrong?"
+  - id: DLY-09
+    heading: "Person"
+    subheading: "someone who was on your mind today, and why"
+    hint: "what does that pull tell you?"
+    placeholder: "Who took up space in your head?"
+  - id: DLY-10
+    heading: "Body"
+    subheading: "one signal from your body you noticed or ignored"
+    hint: "what were you trading it for?"
+    placeholder: "What did your body tell you?"
+  - id: DLY-11
+    heading: "Money"
+    subheading: "a spend that felt off, or one you skipped on principle"
+    hint: "what value sits underneath it?"
+    placeholder: "What did you buy, or not buy?"
+  - id: DLY-12
+    heading: "Learned"
+    subheading: "one thing you know now that you didn't this morning"
+    hint: "does it change what you will do?"
+    placeholder: "What clicked today?"
+  - id: DLY-13
+    heading: "Irritation"
+    subheading: "something that annoyed you more than it deserved"
+    hint: "which of your rules did it step on?"
+    placeholder: "What got under your skin?"
+  - id: DLY-14
+    heading: "Unsaid"
+    subheading: "a conversation you didn't have but should"
+    hint: "what is its first sentence?"
+    placeholder: "What went unsaid?"
+  - id: DLY-15
+    heading: "Headline"
+    subheading: "the clearest win or loss of the day"
+    hint: "what made the difference?"
+    placeholder: "What's the headline of your day?"
+  - id: DLY-16
+    heading: "Reset"
+    subheading: "one small thing that reset you (a walk, a song, a person)"
+    hint: "what do you need more of?"
+    placeholder: "What brought you back?"

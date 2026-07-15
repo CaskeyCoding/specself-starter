@@ -13,11 +13,13 @@ lives in one domain stays in that domain's folder.
 
 ## Revealed vs aspirational
 
-Each principle is `kind: revealed` (backed by evidence of how you've actually
-behaved) or `kind: aspirational` (who you want to be, not yet lived).
-Who-you-want-to-be writing also collects in `../aspirational.md`. **The gap
-between the two is the most valuable signal this system produces — never let the
-agent collapse it.**
+Each principle carries `kind: revealed` (backed by evidence of how you've
+actually behaved) or `kind: aspirational` (who you want to be, not yet lived).
+The files in this folder are the revealed set. Aspirational entries collect in
+`../aspirational.md`, one singleton file of principle-shaped entries (see
+`../../templates/aspirational.md`), until evidence graduates one into its own
+file here as `kind: revealed`. **The gap between the two is the most valuable
+signal this system produces — never let the agent collapse it.**
 
 ## Lifecycle
 

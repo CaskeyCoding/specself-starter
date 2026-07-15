@@ -1,0 +1,222 @@
+# The 20-question foundation bank, canonical source specself-api
+# (src/routes/foundation_session.py QUESTIONS, origin/master 2026-07-15).
+# The API vendors this file back per ADR-009 Decision 2, with a drift test
+# against QUESTIONS (SEAM-9) so kit and app never silently diverge. Do not
+# edit question text, thin_signal, or follow_ups here without also updating
+# the API; this file is downstream of it (verbatim, ADR-009 Decision 6
+# ratifies publishing the bank).
+#
+# Fixed order, seven phases, one question at a time in the Intake voice
+# (personas/intake.md). Each entry: id, phase (1-7), phase_name, text,
+# thin_signal (what a deflected answer looks like), follow_ups (the probe
+# to ask once, only when thin_signal fires; see .claude/skills/foundation/SKILL.md
+# for the thin-answer probe rule and the mapping from answers to synthesis
+# output).
+
+questions:
+  # Phase 1: Operating System (INT-OS)
+  - id: INT-OS-001
+    phase: 1
+    phase_name: "Operating System"
+    text: "Some people know within seconds what the right move is and spend the rest of the time building the case for it. Others genuinely don't know until they've worked through the options. Which are you — and what's a recent example of each?"
+    thin_signal: "Answer says 'it depends' without naming a specific decision."
+    follow_ups:
+      - "Give me the last big decision where you moved faster than felt comfortable. What did you actually know that let you do that?"
+      - "Walk me through the decision you named. What were you working from when you moved?"
+      - "What's an example where the time spent working through it changed the answer — not just the case for it?"
+
+  - id: INT-OS-002
+    phase: 1
+    phase_name: "Operating System"
+    text: "Walk me through the last consequential decision you made that turned out to be wrong. Not the outcome — the process. What information did you have, what did you skip, and when did you know you'd gotten it wrong?"
+    thin_signal: "Answer says 'I didn't have enough information' without naming what was available and ignored."
+    follow_ups:
+      - "What information would have changed the decision, and was it available if you'd looked?"
+      - "When did you actually know it was wrong — and how much time passed before you acted on it?"
+      - "What step did you skip, specifically?"
+
+  - id: INT-OS-003
+    phase: 1
+    phase_name: "Operating System"
+    text: "Who do you actually consult before a major decision — not who you think you should consult, but who you call? And for what part of the decision?"
+    thin_signal: "Names a person without describing what specifically they are asked for."
+    follow_ups:
+      - "What specifically do you ask them? Walk me through the last time you did it."
+      - "And for the parts you don't consult anyone on — what's the logic there?"
+      - "Who do you avoid telling until after you've decided, and why?"
+
+  # Phase 2: Load-Bearing Values (INT-LV)
+  - id: INT-LV-001
+    phase: 2
+    phase_name: "Load-Bearing Values"
+    text: "Tell me about a time you held a position — in work, money, a relationship — that cost you something real. Not a convenient stance, an inconvenient one. What did you not trade, and what did it actually cost?"
+    thin_signal: "Describes an abstract moral stand without naming the material cost."
+    follow_ups:
+      - "What did it actually cost you, in concrete terms? What did you lose or give up?"
+      - "How long did you hold that position before the cost became clear?"
+      - "Would you make the same choice again knowing what you know now?"
+
+  - id: INT-LV-002
+    phase: 2
+    phase_name: "Load-Bearing Values"
+    text: "Now the other side: when have you bent on something you said mattered — and looking back, do you think you were right to?"
+    thin_signal: "Describes a small compromise without examining whether the bend was correct."
+    follow_ups:
+      - "What was the actual reason you bent — not the stated reason, the real one?"
+      - "And in retrospect — was it the right call?"
+      - "What would you have needed to believe to hold the line?"
+
+  - id: INT-LV-003
+    phase: 2
+    phase_name: "Load-Bearing Values"
+    text: "What's a value you publicly associate with yourself that you privately suspect you don't actually live? Where's the gap between your stated values and your actual behavior?"
+    thin_signal: "Deflects to a general observation rather than naming a specific behavioral gap."
+    follow_ups:
+      - "Name a specific situation in the last year where that gap showed up."
+      - "What would need to be true for the gap to close?"
+      - "Who in your life would name that gap if asked?"
+
+  # Phase 3: Life Chapters (INT-LC)
+  - id: INT-LC-001
+    phase: 3
+    phase_name: "Life Chapters"
+    text: "If you divided your adult life into chapters, where would you draw the lines? Not by age or job title — by what was different about who you were, what you wanted, or how you moved through the world."
+    thin_signal: "Divides life by job changes or locations rather than shifts in operating mode."
+    follow_ups:
+      - "What was it about that period that made you different — not what happened, but who you were?"
+      - "Which chapter did you come out of changed in a way you didn't intend?"
+      - "Which chapter would you go back to if you could?"
+
+  - id: INT-LC-002
+    phase: 3
+    phase_name: "Life Chapters"
+    text: "Pick the chapter where you were most effective — where you were operating at a level you haven't matched since, or where you figured something out that still runs. What made that possible?"
+    thin_signal: "Describes external circumstances without naming internal factors."
+    follow_ups:
+      - "What were you doing differently then that you're not doing now?"
+      - "What were the conditions — internal, not external — that made it work?"
+      - "What ended that chapter?"
+
+  - id: INT-LC-003
+    phase: 3
+    phase_name: "Life Chapters"
+    text: "What's a story you've been telling yourself about your own history that you're not sure is accurate? A narrative about who you are or what happened that might be serving a purpose rather than describing reality."
+    thin_signal: "Describes the narrative without questioning whether it's true."
+    follow_ups:
+      - "What would have to be true for that story to be wrong?"
+      - "Who would tell a different version of that story?"
+      - "What do you get from believing it?"
+
+  # Phase 4: Domain Audit (INT-DA)
+  - id: INT-DA-001
+    phase: 4
+    phase_name: "Domain Audit"
+    text: "Walk me across the major domains of your life right now — work, money, relationships, health, learning. For each one: what's working, what's neglected, and what's a slow-building problem you've been putting off?"
+    thin_signal: "Gives one-line status per domain without naming the neglected or slow-building items."
+    follow_ups:
+      - "Which domain is in the most trouble right now, and what specifically is the issue?"
+      - "Which one are you most avoidant about examining?"
+      - "What's the slow-building problem you named — how long has it been building?"
+
+  - id: INT-DA-002
+    phase: 4
+    phase_name: "Domain Audit"
+    text: "Where in your life are you performing competence you don't actually have? Where are you in a role or relationship that you're holding together with effort and reputation rather than real capability?"
+    thin_signal: "Deflects or says there is no such area."
+    follow_ups:
+      - "Name the specific domain or role."
+      - "Who would notice first if it stopped working?"
+      - "What would you need to actually have the capability you're performing?"
+
+  - id: INT-DA-003
+    phase: 4
+    phase_name: "Domain Audit"
+    text: "What's the financial decision or pattern — past or present — that you think about most? Not the biggest dollar figure, the one with the most unresolved meaning."
+    thin_signal: "Names a transaction without examining why it has unresolved meaning."
+    follow_ups:
+      - "Why does that particular one stay with you?"
+      - "What would it mean to resolve it — not fix it, resolve it in your own mind?"
+      - "What does your relationship with that decision reveal about how you think about money?"
+
+  # Phase 5: Failure Modes (INT-FM)
+  - id: INT-FM-001
+    phase: 5
+    phase_name: "Failure Modes"
+    text: "What's your most reliable way of failing? Not a one-off mistake — the pattern that shows up across different contexts, the thing that bites you repeatedly in different forms."
+    thin_signal: "Names a generic weakness without describing how it actually shows up."
+    follow_ups:
+      - "Give me a recent example — what did it look like this time?"
+      - "Where else has that exact pattern shown up in the last two years?"
+      - "What triggers it? What's the situation that reliably surfaces it?"
+
+  - id: INT-FM-002
+    phase: 5
+    phase_name: "Failure Modes"
+    text: "What do people who've worked closely with you criticize you for — not the polite feedback, the real one? The thing someone would say privately that they wouldn't put in a review."
+    thin_signal: "Repeats polished self-aware feedback without naming the raw version."
+    follow_ups:
+      - "What would your most critical former colleague say, specifically?"
+      - "Is there truth in it?"
+      - "What's the version of that criticism you most resist?"
+
+  - id: INT-FM-003
+    phase: 5
+    phase_name: "Failure Modes"
+    text: "Where are you currently coasting? Where have you lowered the bar for yourself — in your work, your relationships, your health — and rationalized it?"
+    thin_signal: "Says they are not currently coasting without examination."
+    follow_ups:
+      - "Name the specific area."
+      - "What's the rationalization you're using?"
+      - "What would it cost to stop coasting there?"
+
+  # Phase 6: Energy and Operating Conditions (INT-EO)
+  - id: INT-EO-001
+    phase: 6
+    phase_name: "Energy and Operating Conditions"
+    text: "What are the conditions under which you consistently do your best work? Not the ideal conditions — the actual ones, the ones that reliably produce the work you're proud of."
+    thin_signal: "Describes generic conditions without naming specific situations."
+    follow_ups:
+      - "Give me a specific time when those conditions were in place. What were you working on?"
+      - "What's the difference between those conditions and what you have right now?"
+      - "What would you need to do to recreate them?"
+
+  - id: INT-EO-002
+    phase: 6
+    phase_name: "Energy and Operating Conditions"
+    text: "What drains you — not just tires you, drains you — in a way that takes days to recover from? And how often is that thing in your life right now?"
+    thin_signal: "Names a general category without examining frequency or recovery cost."
+    follow_ups:
+      - "How often is that in your life right now — be specific."
+      - "What does the recovery look like? What do you do?"
+      - "Is there a version of your current life where that's not present — or is it structural?"
+
+  - id: INT-EO-003
+    phase: 6
+    phase_name: "Energy and Operating Conditions"
+    text: "What's a commitment — work, relationship, obligation — that you've been honoring out of momentum rather than choice? The thing you'd drop if you were designing from scratch."
+    thin_signal: "Cannot name one, or names something trivial."
+    follow_ups:
+      - "Name the specific commitment."
+      - "What would actually happen if you dropped it?"
+      - "What's keeping you from making that choice now?"
+
+  # Phase 7: Trajectory (INT-TR)
+  - id: INT-TR-001
+    phase: 7
+    phase_name: "Trajectory"
+    text: "Five years from now — what does the version of your life that you'd be genuinely proud of look like? Not optimistic, not safe. The one that would feel like you took your actual shot."
+    thin_signal: "Describes achievements or status markers without naming what would make it feel like the real shot."
+    follow_ups:
+      - "What specifically would feel like the real shot — the thing you'd actually have to do or become?"
+      - "What's the version of that future you're more likely to end up in instead?"
+      - "What would have to happen this year for the proud version to still be possible?"
+
+  - id: INT-TR-002
+    phase: 7
+    phase_name: "Trajectory"
+    text: "What's the bet you haven't made — the decision or commitment you've been circling for more than a year without committing? What would it take to actually make it?"
+    thin_signal: "Names a vague aspiration rather than a specific unmade bet."
+    follow_ups:
+      - "Name the specific bet — be as concrete as you can."
+      - "What's the real reason you haven't made it? Not the stated reason."
+      - "What would need to be different — in you, not in the circumstances — to make it?"

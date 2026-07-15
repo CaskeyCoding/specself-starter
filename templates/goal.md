@@ -1,13 +1,12 @@
 ---
-id:
-title:                      # kebab-case-slug
-status: active              # draft | active | met | contested | retired
+title:                      # display title, free text (the filename is the id)
+status: active              # draft | active | contested | met | retired
 horizon: 6-24mo
-serves: [vision]            # vision and/or principle:<id> this goal advances
+serves: [vision]            # type:slug refs this advances (see templates/README.md)
 created: YYYY-MM-DD
 target_date: YYYY-MM-DD
 last_reviewed: YYYY-MM-DD
-met_on:                     # set with a date when status -> met
+ended_on:                   # set with a date when status enters a terminal state
 ---
 
 # [Goal title — the outcome, not the activity]

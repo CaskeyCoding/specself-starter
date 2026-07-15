@@ -1,0 +1,32 @@
+# SpecSelf privacy guard — the agent-independent fallback.
+#
+# The .claude/ hook protects you inside Claude Code. THIS protects you in any
+# git client. Install once:
+#
+#     pip install pre-commit && pre-commit install
+#
+# Then every `git commit` runs the same corpus/secret guard, no agent required.
+# It is the authoritative gate; the Claude hook is a convenience that also catches
+# leaks mid-session.
+repos:
+  - repo: local
+    hooks:
+      - id: specself-corpus-guard
+        name: SpecSelf privacy guard (no corpus, no secrets)
+        entry: bash .claude/hooks/guard-corpus-commit.sh
+        language: system
+        pass_filenames: true
+        always_run: true
+        stages: [pre-commit]
+
+      # Opt-in: schema validation (scripts/validate.py) against templates/README.md.
+      # Off by default because it needs a python3 on PATH, which pre-commit's
+      # "system" language does not guarantee; uncomment once you've confirmed
+      # `python3 scripts/validate.py` runs clean in your corpus.
+      # - id: specself-schema-validate
+      #   name: SpecSelf schema validator (your-life/ vs templates/README.md)
+      #   entry: python3 scripts/validate.py
+      #   language: system
+      #   pass_filenames: false
+      #   always_run: true
+      #   stages: [pre-commit]
