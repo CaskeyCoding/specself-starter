@@ -20,6 +20,21 @@ goals are written as specs; the reviews are the tests.
 
 ---
 
+## Test drive it in five minutes
+
+You do not have to tell the system anything about yourself to see what it does.
+Clone the repo and run the weekly coherence report over the worked example
+corpus:
+
+```bash
+python scripts/coherence.py examples/sam-rivers
+```
+
+You get the same kind of report the kit gives you after a few weeks of real
+use: the orphaned project, the starved area, the principle drifting from its
+evidence, and the one question worth sitting with. No account, no personal
+input, nothing to set up beyond the clone.
+
 ## The one rule
 
 > **You decide and commit. The agent organizes, connects, surfaces, and
@@ -70,14 +85,17 @@ no goal, the goal that contradicts a principle, the area you've starved all week
 See [`steering/coherence.md`](steering/coherence.md) for how the agent checks
 alignment across horizons.
 
-## Get started (setup: 5 minutes; first session: 60-90 minutes)
+## Get started (setup: about 5 minutes; first sitting: 15-20 minutes)
 
-1. **Use this template** (or clone it) into a new private repo. (~5 minutes)
+1. **Use this template** (or clone it) into a new private repo. (about 5 minutes)
 2. Open it with your agent. Tell it:
    > "Read `AGENTS.md` and everything in `steering/`, then walk me through `GETTING-STARTED.md`."
-3. Do the **foundation session** once (budget 60-90 minutes, per
-   `GETTING-STARTED.md`): the agent interviews you and seeds the stack with
-   your first principles, vision, areas, and goals.
+3. Do the **first foundation sitting** once (about 15-20 minutes, per
+   `GETTING-STARTED.md`): the agent interviews you and drafts your first
+   candidate principles. The rest of the foundation (vision, areas, goals,
+   projects) spreads across three more short sittings over your first week, so
+   the largest ask never lands on day one. Arriving with years of notes
+   already? Run `/adopt` instead and draft a first corpus from them.
 4. Run the loop from there: `/daily` capture, `/weekly` review, monthly+ deep
    sessions. The agent reminds; you reflect.
 
@@ -127,7 +145,11 @@ record. The app speaks the same contracts this kit defines (the schemas,
 personas, prompts, and question bank here are the single source it vendors),
 and it exports your corpus in exactly this kit's `your-life/` shape, so you
 can start hosted and graduate to your own repo, or ignore the app entirely.
-The kit is the whole method; the app is one convenient engine for part of it.
+The export includes an `EXPORT-REPORT.md` that names anything you need to
+backfill (a revealed principle still missing its dated evidence, say) before
+`scripts/validate.py` passes, so graduation is honest about what is left to do
+rather than promising a clean round trip. The kit is the whole method; the app
+is one convenient engine for part of it.
 
 ## Upgrading after you've diverged
 
@@ -142,11 +164,7 @@ walks the flow with a worked example.
 
 ## License & attribution
 
-SpecSelf Starter is offered for you to fork and adapt. Suggested licensing:
-MIT for the scaffolding/code, CC-BY for the method docs. Pick what fits before
-you publish a fork. The method here is the structure and the prompts — your
-principles and your life are entirely your own.
-
-As shipped, this repository carries only the MIT license (the scaffolding as
-released). The CC-BY-for-method-docs split above is an option the forker
-implements, not something already in place here.
+SpecSelf Starter is MIT-licensed (see [`LICENSE`](LICENSE)): fork it, adapt
+it, build on it, commercially or not. The method here is the structure and
+the prompts. Your principles and your life are entirely your own and never
+part of this license.

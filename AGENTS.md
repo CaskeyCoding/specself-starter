@@ -76,6 +76,11 @@ never author from).
    earned no attention or evidence in a full cycle as candidates for `contested`.
    A dead goal or a fictional habit pollutes the whole stack.
 
+7. **Adopt existing notes (once, on request).** When the human arrives with a body
+   of notes instead of a blank `your-life/`, run `/adopt`: read their named source
+   directory read-only and draft bounded candidates from it, citing each source,
+   never copying the notes wholesale. See `.claude/skills/adopt/SKILL.md`.
+
 ## Session protocol
 
 1. Read `steering/` (method) + the relevant `personas/` file (lens) + the

@@ -107,6 +107,26 @@ Top question this week: You have 7 active projects and starved health for
 End with **one** sharp question — the most important tension for them to resolve.
 Don't dump all six findings as equally urgent; rank them.
 
+## Persistence and trend
+
+A single week's report cannot see that an area has been starved three weeks
+running. So the **cadence tiers** (weekly and up) persist the report as a dated
+file under `your-life/reviews/coherence/YYYY-MM-DD.md` and add a **Trend**
+section: per-check deltas ("stale 0 -> 5") and streaks ("starved: area:health,
+3rd consecutive report"). Run it with
+`scripts/coherence.py your-life --write your-life/reviews/coherence --tier <tier>`;
+the streak is what lets the top question come from a repeating gap, not just this
+week's snapshot.
+
+Two rules keep this honest:
+
+- **Ad-hoc stays ephemeral.** A standalone `/coherence-check` writes nothing by
+  design (a scratch audit is not a record). Only the cadence runs persist.
+- **Reports are derived, never Evidence.** Each persisted report is
+  machine-derived and regenerable ("safe to delete"). It is an observation about
+  the corpus, not corpus itself, so it is never cited as `Evidence` for a
+  principle. Evidence is lived events.
+
 ## What you must not do
 
 - Do not rewrite goals/projects/principles to "fix" coherence. Resolution is the

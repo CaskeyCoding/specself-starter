@@ -13,7 +13,12 @@ Run the SpecSelf **monthly** tier as **Skeptic + Therapist**. Honor `AGENTS.md`.
    (Therapist).
 2. For each candidate principle: rate confidence and write a falsification criterion.
 3. Run the full six-check coherence pass from `steering/coherence.md` across the whole
-   stack; produce the ranked report.
+   stack; produce the ranked report. **Persist it:**
+   `python scripts/coherence.py your-life --write your-life/reviews/coherence --tier monthly`.
+   Read the report's **Trend** section back into the wrap: a finding on a streak
+   outranks a fresh one, so let the ONE question come from a streak when the trend
+   shows one. The dated report is machine-derived and regenerable; never cite it as
+   `Evidence` for a principle.
 4. Hydrate `templates/review-monthly.md` to `your-life/reviews/`.
 
 Write candidates as `<!-- CANDIDATE - edit or delete -->` blocks. Promote nothing

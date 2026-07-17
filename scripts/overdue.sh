@@ -58,6 +58,27 @@ for f in "$dir"/*; do
     esac
 done
 
+# Persisted coherence reports (reviews/coherence/YYYY-MM-DD.md) live in a
+# subdirectory, not among the tier reviews above. Track the newest one so its
+# age can be surfaced below: a lapsed session opens with the last known state,
+# not a blank slate (see steering/coherence.md, persistence and trend).
+coherence_newest=""
+cdir="$dir/coherence"
+if [ -d "$cdir" ]; then
+    for cf in "$cdir"/*.md; do
+        [ -e "$cf" ] || continue
+        cb=$(basename "$cf" .md)
+        case "$cb" in
+            [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])
+                if [ -z "$coherence_newest" ] || [ "$cb" \> "$coherence_newest" ]; then
+                    coherence_newest="$cb"
+                fi
+                ;;
+        esac
+    done
+fi
+if [ -n "$coherence_newest" ]; then found_any=1; fi
+
 if [ "$found_any" -eq 0 ]; then
     echo "SpecSelf: no reviews yet — run GETTING-STARTED.md to seed your life OS."
     exit 0
@@ -102,6 +123,15 @@ fi
 if [ -n "$annual_latest" ]; then
     diff=$(( 10#$now_year - 10#$annual_latest ))
     [ "$diff" -gt 1 ] && echo "SpecSelf: annual review overdue (latest $annual_latest, now $now_year)."
+fi
+
+if [ -n "$coherence_newest" ]; then
+    newest_epoch=$(date -d "$coherence_newest" +%s)
+    now_epoch=$(date +%s)
+    age_days=$(( (now_epoch - newest_epoch) / 86400 ))
+    if [ "$age_days" -gt 7 ]; then
+        echo "SpecSelf: latest coherence report is ${age_days}d old ($coherence_newest); run /weekly to refresh it."
+    fi
 fi
 
 exit 0

@@ -134,6 +134,10 @@ def infer_type(rel_path):
     parts = rel_path.parts
     if ".sensitive" in parts or rel_path.name in ("README.md", ".gitkeep"):
         return None
+    # Persisted coherence reports are machine-derived observations, not a
+    # validated artifact type (persisted-coherence spec); never classified.
+    if parts[:2] == ("reviews", "coherence"):
+        return None
     if len(parts) == 1 and rel_path.name == "vision.md":
         return "vision"
     if len(parts) == 1 and rel_path.name == "aspirational.md":
@@ -433,6 +437,183 @@ def build_report(corpus, records, today, args):
 
 
 # ---------------------------------------------------------------------------
+# Persisted report + trend (write mode)
+#
+# Cadence tiers (weekly+) persist the report as your-life/reviews/YYYY-MM-DD.md
+# under a coherence/ subdir, with a provenance header and a Trend section
+# computed from prior reports already in the target directory. The read-only
+# default path (no --write) is untouched: build_report() is called unchanged
+# and the trend is derived by re-parsing the report's own machine-readable
+# lines (the same parser used on prior reports), so nothing new leaks into the
+# default output.
+# ---------------------------------------------------------------------------
+
+# Check header line -> internal key. The report emits each count as
+# "Orphans:        N" etc.; these are the stable machine-readable anchors the
+# trend is computed from (finding prose is never parsed).
+REPORT_HEADERS = {
+    "Orphans": "orphans",
+    "Starved areas": "starved",
+    "Stale": "stale",
+    "Drift": "drift",
+}
+TREND_CHECK_LABELS = [
+    ("orphans", "orphans"),
+    ("starved", "starved areas"),
+    ("stale", "stale"),
+    ("drift", "drift"),
+]
+_HEADER_RE = re.compile(r"^(Orphans|Starved areas|Stale|Drift):\s+(\d+)\b")
+_CAPACITY_RE = re.compile(r"^Over-capacity:\s+(yes|no)\b")
+
+
+def parse_report_text(text):
+    """Extract per-check counts, finding ids, and the over-capacity flag from a
+    report (raw build_report() output, or a persisted report file that wraps
+    it). Only the deterministic header/finding lines are read; the surrounding
+    markdown and the Trend section are ignored because they never start with a
+    counted header and finding lines are the only indented lines that follow
+    one. Returns (counts, items, over_capacity)."""
+    counts = {}
+    items = {key: [] for key in REPORT_HEADERS.values()}
+    over_capacity = None
+    current = None
+    for line in text.splitlines():
+        m = _HEADER_RE.match(line)
+        if m:
+            key = REPORT_HEADERS[m.group(1)]
+            counts[key] = int(m.group(2))
+            current = key
+            continue
+        mc = _CAPACITY_RE.match(line)
+        if mc:
+            over_capacity = mc.group(1) == "yes"
+            current = None
+            continue
+        if line[:1] not in (" ", "\t", ""):
+            # any other non-indented line (title, note, headings, Contradictions)
+            current = None
+            continue
+        if current:
+            stripped = line.strip()
+            if stripped:
+                items[current].append(stripped.split()[0])
+    return counts, items, over_capacity
+
+
+def _ordinal(n):
+    if 10 <= n % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+    return f"{n}{suffix}"
+
+
+def load_prior_reports(out_dir, today):
+    """Return prior persisted reports in out_dir as (date, counts, items, over)
+    sorted oldest first, excluding today's target file. Malformed / non-dated
+    names are skipped so a stray file never breaks the trend."""
+    prior = []
+    target_name = f"{today.isoformat()}.md"
+    for path in sorted(out_dir.glob("*.md")):
+        if path.name == target_name:
+            continue
+        d = parse_date(path.stem)
+        if d is None:
+            continue
+        counts, items, over = parse_report_text(path.read_text(encoding="utf-8-sig"))
+        prior.append((d, counts, items, over))
+    prior.sort(key=lambda t: t[0])
+    return prior
+
+
+def _over_txt(over):
+    if over is None:
+        return "unknown"
+    return "yes" if over else "no"
+
+
+def build_trend_section(prior, today, cur_counts, cur_items, cur_over):
+    """Return the Trend section lines: deltas per check vs the previous report,
+    plus streaks (a finding id repeating across consecutive most-recent
+    reports). First report in a directory states there is no prior baseline."""
+    lines = ["## Trend", ""]
+    if not prior:
+        lines.append(
+            "No prior baseline: this is the first persisted coherence report in "
+            "this directory. Later runs will show per-check deltas and finding "
+            "streaks against it."
+        )
+        return lines
+
+    prev_date, prev_counts, _prev_items, prev_over = prior[-1]
+
+    lines.append(f"Compared to the previous report ({prev_date.isoformat()}):")
+    lines.append("")
+    for key, label in TREND_CHECK_LABELS:
+        pv = prev_counts.get(key, 0)
+        cv = cur_counts.get(key, len(cur_items.get(key, [])))
+        lines.append(f"- {label}: {pv} -> {cv}")
+    lines.append(f"- over-capacity: {_over_txt(prev_over)} -> {_over_txt(cur_over)}")
+
+    sequence = [(d, items) for d, _c, items, _o in prior] + [(today, cur_items)]
+    streaks = []
+    for key, _label in TREND_CHECK_LABELS:
+        for item in cur_items.get(key, []):
+            run = 0
+            for _d, items in reversed(sequence):
+                if item in items.get(key, []):
+                    run += 1
+                else:
+                    break
+            if run >= 2:
+                streaks.append(f"- {key}: {item}, {_ordinal(run)} consecutive report")
+    streaks = sorted(set(streaks))
+
+    lines.append("")
+    if streaks:
+        lines.append("Streaks (a finding repeating across consecutive reports):")
+        lines.append("")
+        lines.extend(streaks)
+    else:
+        lines.append("No finding has repeated across consecutive reports yet.")
+    return lines
+
+
+PROVENANCE = (
+    "**Machine-derived by `scripts/coherence.py`; not an authored artifact; "
+    "regenerable and safe to delete.** These reports are observations, never "
+    "cited as `Evidence` for a principle."
+)
+
+
+def render_persisted_report(out_dir, report_text, today, tier):
+    """Wrap build_report() output with the provenance header and a Trend
+    section, and return the full document text for YYYY-MM-DD.md."""
+    cur_counts, cur_items, cur_over = parse_report_text(report_text)
+    prior = load_prior_reports(out_dir, today)
+
+    title = f"# Coherence report: {today.isoformat()}"
+    if tier:
+        title += f" ({tier})"
+
+    head = [
+        title,
+        "",
+        PROVENANCE,
+        "",
+        "## Findings",
+        "",
+        "```text",
+        report_text,
+        "```",
+        "",
+    ]
+    trend = build_trend_section(prior, today, cur_counts, cur_items, cur_over)
+    return "\n".join(head + trend) + "\n"
+
+
+# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
@@ -473,6 +654,18 @@ def main():
         help="dated evidence entries (matching domain, since the aspirational entry's 'added' date) "
              "needed to flag a promotion candidate. Not sourced from coherence.md; tune per corpus.",
     )
+    parser.add_argument(
+        "--write", metavar="DIR", default=None,
+        help="also persist a dated report (YYYY-MM-DD.md, from --today) to DIR with a "
+             "provenance header and a Trend section computed from prior reports already "
+             "there. Cadence tiers write to your-life/reviews/coherence/; the read-only "
+             "default (no --write) is byte-for-byte unchanged.",
+    )
+    parser.add_argument(
+        "--tier", default=None,
+        help="cadence tier recorded in a persisted report's header "
+             "(weekly|monthly|quarterly|annual); only used with --write.",
+    )
     args = parser.parse_args()
 
     corpus = Path(args.corpus)
@@ -489,7 +682,18 @@ def main():
         today = date.today()
 
     records = load_corpus(corpus)
-    print(build_report(corpus, records, today, args))
+    report = build_report(corpus, records, today, args)
+
+    if args.write:
+        out_dir = Path(args.write)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        doc = render_persisted_report(out_dir, report, today, args.tier)
+        target = out_dir / f"{today.isoformat()}.md"
+        target.write_text(doc, encoding="utf-8")
+        print(doc, end="")
+        return 0
+
+    print(report)
     return 0
 
 

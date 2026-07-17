@@ -15,6 +15,12 @@ Run the SpecSelf **weekly** tier as **Coach + Journalist**. Honor `AGENTS.md`.
 3. **Coherence check.** Run all six checks from `steering/coherence.md` against
    `your-life/` (orphans, contradictions, starved areas, over-capacity, staleness,
    drift) and produce the compact **ranked** coherence report, not a flat dump.
+   **Persist it** so this week remembers the last one:
+   `python scripts/coherence.py your-life --write your-life/reviews/coherence --tier weekly`.
+   Read the written report's **Trend** section back into the wrap: a finding on a
+   streak ("starved: area:health, 3rd consecutive report") outranks a fresh one, so
+   let the ONE question come from a streak when the trend shows one. The dated report
+   is machine-derived and regenerable; never cite it as `Evidence` for a principle.
 4. **Candidates.** Surface candidate principles/habits/edits. Write each into its
    target file as a `<!-- CANDIDATE - edit or delete -->` block, clearly labeled, never
    committed.

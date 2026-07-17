@@ -15,7 +15,12 @@ Run the SpecSelf **annual** tier as **Future-Self + Biographer + Stoic**. Honor 
 2. **Then diff** against the prior set. What you cannot re-derive is a candidate for
    `retired`. The diff between this year and last is the year's real report.
 3. Run the six-check coherence pass from `steering/coherence.md` across the rewritten
-   stack; produce the ranked report.
+   stack; produce the ranked report. **Persist it:**
+   `python scripts/coherence.py your-life --write your-life/reviews/coherence --tier annual`.
+   Read the report's **Trend** section back into the wrap: a finding on a streak
+   outranks a fresh one, so let the ONE question come from a streak when the trend
+   shows one. The dated report is machine-derived and regenerable; never cite it as
+   `Evidence` for a principle.
 4. Hydrate `templates/review-annual.md` to `your-life/reviews/`.
 
 Write the rewrite and retirements as `<!-- CANDIDATE - edit or delete -->` blocks;

@@ -7,7 +7,8 @@ is a hook (`../settings.json` + a pre-commit fallback, SS-9).
 
 | Skill | Tier | Lead lens |
 |---|---|---|
-| `foundation` | once, at setup (~60-90 min) | Intake / Journalist |
+| `foundation` | once, in 3-4 short sittings across week one (or one long session) | Intake / Journalist |
+| `adopt` | once, if you arrive with existing notes | Journalist |
 | `daily` | daily (~2 min) | Journalist |
 | `weekly` | weekly (~20 min) | Coach + Journalist |
 | `monthly` | monthly (~60 min) | Skeptic + Therapist |

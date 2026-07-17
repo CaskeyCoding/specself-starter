@@ -12,8 +12,9 @@ Run the SpecSelf **daily** tier in the **Journalist** lens. Honor `AGENTS.md`.
 2. If today's entry already has a `## Captures` section, read its jots as raw
    material for this close, don't rewrite them.
 3. Pick today's three prompts from `templates/daily-prompts.yaml` using its
-   documented deterministic date-window rule (the same rule the app uses, so
-   kit and app users get the same prompts on the same day). Ask them one at a
+   documented deterministic date-window rule, keyed to the user's local
+   calendar date (the same rule the app uses, so kit and app users in the
+   same timezone get the same prompts on the same day). Ask them one at a
    time, plus one line on what would make tomorrow count.
 4. Write to `your-life/journal/<today>.md` via `templates/journal-entry.md`
    (create if absent, append if present), filling the `## Responses` list once

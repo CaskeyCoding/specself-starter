@@ -14,7 +14,12 @@ Run the SpecSelf **quarterly** tier as **Skeptic + Forensic-Auditor**. Honor `AG
 2. Any artifact with no new supporting evidence this quarter: recommend `contested` (a
    recommendation only). This is the primary pruning tier.
 3. Run the six-check coherence pass from `steering/coherence.md`; produce the ranked
-   report.
+   report. **Persist it:**
+   `python scripts/coherence.py your-life --write your-life/reviews/coherence --tier quarterly`.
+   Read the report's **Trend** section back into the wrap: a finding on a streak
+   outranks a fresh one, so let the ONE question come from a streak when the trend
+   shows one. The dated report is machine-derived and regenerable; never cite it as
+   `Evidence` for a principle.
 4. Hydrate `templates/review-quarterly.md` to `your-life/reviews/`.
 
 Recommend every status transition with its evidence; make none. Candidates go in

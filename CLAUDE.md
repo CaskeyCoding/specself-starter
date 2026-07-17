@@ -28,7 +28,7 @@ runs the coherence check on weekly+, and writes only `<!-- CANDIDATE -->` drafts
 
 | Skill | When | Lead lens |
 |---|---|---|
-| `/foundation` | once, at setup (~60-90 min) | Intake / Journalist |
+| `/foundation` | once, at setup (first sitting 15-20 min; rest across week one) | Intake / Journalist |
 | `/daily` | daily (~2 min) | Journalist |
 | `/weekly` | weekly (~20 min) | Coach + Journalist |
 | `/monthly` | monthly (~60 min) | Skeptic + Therapist |

@@ -12,17 +12,23 @@ per_day: 3
 
 # Deterministic date-window rule, matching the app's pickTodaysPrompts:
 #
-#   dayIndex = floor(epoch_ms(date) / 86400000)     # days since epoch, UTC
-#   start = ((dayIndex * per_day) mod len(pool) + len(pool)) mod len(pool)
+#   localDate = the user's local calendar date (YYYY-MM-DD from local time)
+#   localDayIndex = days since 1970-01-01 of that LOCAL calendar date
+#                   (equivalently floor((now_ms - tzOffsetMs) / 86400000))
+#   start = ((localDayIndex * per_day) mod len(pool) + len(pool)) mod len(pool)
 #   today's prompts = pool[start], pool[(start+1) mod len(pool)], pool[(start+2) mod len(pool)]
 #
-# Not random: the same date always produces the same three prompts, on both
-# the kit and the app. Each day's window advances by per_day, so consecutive
-# days are disjoint before any wraparound repeat.
+# Not random: the same local calendar date always produces the same three
+# prompts, on both the kit and the app. Each day's window advances by
+# per_day, so consecutive days are disjoint before any wraparound repeat.
+# Known accepted edge: a timezone change mid-day (travel) can change the
+# local date; determinism holds within any given local date. Kit and app
+# users in the same timezone see the same prompts on the same day.
 selection: >-
-  dayIndex = floor(epoch_ms(date) / 86400000); start = ((dayIndex * per_day)
-  mod pool_length + pool_length) mod pool_length; today's prompts are
-  pool[start .. start + per_day - 1], wrapping mod pool_length.
+  localDayIndex = days since 1970-01-01 of the user's local calendar date;
+  start = ((localDayIndex * per_day) mod pool_length + pool_length) mod
+  pool_length; today's prompts are pool[start .. start + per_day - 1],
+  wrapping mod pool_length.
 
 pool:
   - id: DLY-01

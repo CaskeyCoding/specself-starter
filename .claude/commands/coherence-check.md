@@ -16,4 +16,4 @@ report, change nothing.
 
 Do not edit any file or flip any status. Surface; the human decides.
 
-This standalone check is ephemeral by design (conversation output only, nothing written to disk); the persisted trail is the Coherence report section inside weekly+ review files.
+This standalone check is ephemeral by design (conversation output only, nothing written to disk); the persisted trail is the dated coherence reports the weekly+ tiers write to `your-life/reviews/coherence/`. If you want a dated audit from this ad-hoc run too, add `--write your-life/reviews/coherence` (optionally `--tier ...`) to `scripts/coherence.py`; the default with no `--write` stays ephemeral.

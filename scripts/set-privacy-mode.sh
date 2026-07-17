@@ -89,8 +89,8 @@ do_private() {
   fi
   echo "Private mode set: your-life/ corpus will now be tracked by git."
   echo "your-life/.sensitive/** stays ignored, no exceptions."
-  echo "The commit guard now allows corpus commits (private remote only —"
-  echo "see steering/privacy.md)."
+  echo "The commit guard now allows corpus commits. Only use this in a"
+  echo "PRIVATE remote (see steering/privacy.md)."
 }
 
 do_public() {

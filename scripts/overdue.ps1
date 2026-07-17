@@ -68,6 +68,21 @@ if (Test-Path -LiteralPath $ReviewsDir -PathType Container) {
     }
 }
 
+# Persisted coherence reports (reviews/coherence/YYYY-MM-DD.md) live in a
+# subdirectory, not among the tier reviews above. Track the newest one so its
+# age can be surfaced below: a lapsed session opens with the last known state,
+# not a blank slate (see steering/coherence.md, persistence and trend).
+$coherenceNewest = $null
+$coherenceDir = Join-Path $ReviewsDir "coherence"
+if (Test-Path -LiteralPath $coherenceDir -PathType Container) {
+    foreach ($cf in Get-ChildItem -LiteralPath $coherenceDir -File -Filter *.md) {
+        if ($cf.BaseName -match '^[0-9]{4}-[0-9]{2}-[0-9]{2}$') {
+            if (-not $coherenceNewest -or $cf.BaseName -gt $coherenceNewest) { $coherenceNewest = $cf.BaseName }
+        }
+    }
+}
+if ($coherenceNewest) { $foundAny = $true }
+
 if (-not $foundAny) {
     Write-Output "SpecSelf: no reviews yet — run GETTING-STARTED.md to seed your life OS."
     exit 0
@@ -117,6 +132,14 @@ if ($quarterlyLatest) {
 if ($annualLatest) {
     if (($nowYear - [int]$annualLatest) -gt 1) {
         Write-Output "SpecSelf: annual review overdue (latest $annualLatest, now $nowYear)."
+    }
+}
+
+if ($coherenceNewest) {
+    $coherenceDate = [datetime]::ParseExact($coherenceNewest, 'yyyy-MM-dd', $null)
+    $ageDays = [int][math]::Floor(((Get-Date).Date - $coherenceDate).TotalDays)
+    if ($ageDays -gt 7) {
+        Write-Output "SpecSelf: latest coherence report is ${ageDays}d old ($coherenceNewest); run /weekly to refresh it."
     }
 }
 

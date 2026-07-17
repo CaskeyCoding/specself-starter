@@ -92,6 +92,12 @@ def infer_type(rel_path):
     parts = rel_path.parts
     if ".sensitive" in parts or rel_path.name in ("README.md", ".gitkeep"):
         return None
+    # Persisted coherence reports (reviews/coherence/YYYY-MM-DD.md) are
+    # machine-derived observations, not a validated artifact type
+    # (persisted-coherence spec). Ignore the directory so the validator never
+    # treats a regenerable report as a corpus artifact to check.
+    if parts[:2] == ("reviews", "coherence"):
+        return None
     if len(parts) == 1 and rel_path.name == "vision.md":
         return "vision"
     if len(parts) == 1 and rel_path.name == "aspirational.md":

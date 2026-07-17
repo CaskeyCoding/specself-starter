@@ -19,7 +19,15 @@ never affected.
 
 ## [Unreleased]
 
-*Nothing yet.*
+### Fixed
+
+- `templates/daily-prompts.yaml`, `.claude/skills/daily/SKILL.md`: the daily
+  tier's date-window rule now keys off the user's local calendar date instead
+  of the UTC epoch day. The UTC anchoring inherited an app bug where an entry
+  written near midnight local time could file under tomorrow's date; entries
+  near midnight now file under the user's own date. Matches the app-side fix
+  landed the same day, so kit and app users in the same timezone still see
+  the same prompts on the same day.
 
 ## [0.2.1] — 2026-07-15
 
