@@ -60,6 +60,11 @@ blocked. Your foundation progress file
 (`your-life/reflections/foundation-progress.md`, written between sittings) lives
 under `your-life/`, so the same guard keeps it private too.
 
+Run `python scripts/doctor.py` whenever you want proof the privacy posture holds:
+it probes your ignore rules and the guard wiring read-only, reports the corpus and
+cadence state, and leaves nothing behind. The same checks ship as CI in
+`.github/workflows/validate.yml`, so every fork gets a corpus-leak tripwire for free.
+
 **Private-repo users:** if you deliberately keep your whole life in a PRIVATE repo
 and want it versioned, create an empty `.specself-allow-corpus` file at the repo
 root (step 1 above). The guard then lets your corpus through while still blocking

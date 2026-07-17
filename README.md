@@ -35,6 +35,24 @@ use: the orphaned project, the starved area, the principle drifting from its
 evidence, and the one question worth sitting with. No account, no personal
 input, nothing to set up beyond the clone.
 
+That command prints this over the shipped fictional corpus (Sam Rivers, a solo
+game developer): one starved area, five stale artifacts, and a principle
+drifting from its evidence.
+
+![Weekly coherence report over the Sam Rivers example corpus, flagging a starved health area, five stale artifacts, and a principle drifting from its evidence.](.github/assets/demo-coherence.png)
+
+*Real output of `python scripts/coherence.py examples/sam-rivers`, over the
+fictional example corpus that ships in `examples/`.*
+
+And a foundation sitting looks like this: the agent asks, you answer, and it
+drafts a candidate principle from your own words for you to keep or discard. It
+never saves anything as yours until you say so.
+
+![A foundation sitting over the Sam Rivers example: two intake questions, Sam's answers, and a candidate principle the agent drafts in the kit's format for the human to decide on.](.github/assets/demo-sitting1.png)
+
+*A scripted foundation sitting over the fictional Sam Rivers corpus. The agent
+surfaces and drafts; you decide and author.*
+
 ## The one rule
 
 > **You decide and commit. The agent organizes, connects, surfaces, and
@@ -98,6 +116,10 @@ alignment across horizons.
    already? Run `/adopt` instead and draft a first corpus from them.
 4. Run the loop from there: `/daily` capture, `/weekly` review, monthly+ deep
    sessions. The agent reminds; you reflect.
+
+Any time, run `python scripts/doctor.py` for proof the privacy posture holds
+(and the single next step to take). It ships with CI too: `.github/workflows/validate.yml`
+runs the schema validator and a corpus-leak tripwire on every push.
 
 Your content goes in `your-life/`, which is **gitignored by default**. Commit the
 *structure*, keep the *content* private. See [`steering/privacy.md`](steering/privacy.md).

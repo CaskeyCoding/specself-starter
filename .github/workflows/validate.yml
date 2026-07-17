@@ -1,0 +1,58 @@
+name: validate
+
+# Ships IN the kit so every fork gets CI for free. Two guarantees, no
+# third-party actions (only actions/checkout + actions/setup-python), stdlib
+# only, so it runs in seconds inside a private fork's free minutes:
+#
+#   1. Corpus-leak tripwire: nothing under your-life/ beyond committed structure
+#      (README.md / .gitkeep) is tracked. Same predicate as EXTRACTION.md step 2.
+#      A fork that deliberately versions its corpus in a PRIVATE repo opts out by
+#      committing a .specself-allow-corpus file at the root (the same escape
+#      hatch the privacy guard honors); the tripwire then steps aside.
+#   2. Schema validation: scripts/validate.py over your-life/. An empty corpus
+#      (structure only) soft-passes with a printed notice.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Corpus-leak tripwire (your life stays yours)
+        run: |
+          # .sensitive/ is refused UNCONDITIONALLY, private mode or not,
+          # mirroring the guard hook: the escape hatch is never committed.
+          sensitive=$(git ls-files 'your-life/.sensitive' || true)
+          if [ -n "$sensitive" ]; then
+            echo "::error::your-life/.sensitive/ content is tracked. The escape hatch never applies to .sensitive/; untrack it (git rm --cached) before pushing."
+            echo "$sensitive"
+            exit 1
+          fi
+          if [ -f .specself-allow-corpus ]; then
+            echo "Private mode: .specself-allow-corpus present, corpus versioning is deliberate; skipping the leak tripwire (the .sensitive/ block above still applies)."
+            exit 0
+          fi
+          leaked=$(git ls-files your-life | grep -vE '(^|/)(README\.md|\.gitkeep)$' || true)
+          if [ -n "$leaked" ]; then
+            echo "::error::Private corpus content is tracked under your-life/. The kit commits only README.md and .gitkeep there; everything else is yours and must never be committed on a public fork."
+            echo "$leaked"
+            exit 1
+          fi
+          echo "your-life/ is clean: only committed structure (README.md / .gitkeep) is tracked."
+
+      - name: Validate corpus schema
+        run: |
+          authored=$(find your-life -type f -name '*.md' ! -name 'README.md' | head -n 1)
+          if [ -z "$authored" ]; then
+            echo "your-life/ has no authored artifacts yet (empty corpus); schema validation soft-passes."
+            exit 0
+          fi
+          python scripts/validate.py --corpus your-life
