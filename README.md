@@ -18,6 +18,10 @@ own private repo. No server, no account, no keys to lose.
 statement of intent that reality gets checked against. Your principles and
 goals are written as specs; the reviews are the tests.
 
+**Site:** [specself.ai](https://specself.ai). The method essay behind the
+kit: [Spec-Driven Development and the Folder Architecture That Makes It
+Work](https://caskeycoding.com/blog/spec-driven-development-and-the-folder-architecture-that-makes-it-work).
+
 ---
 
 ## Test drive it in five minutes
