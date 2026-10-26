@@ -19,7 +19,7 @@ Five checks:
      .pre-commit-config.yaml fallback references the same guard. Assessed by
      reading files only; the fallback install state is reported, never changed
      (this script never runs `pre-commit install`).
-  3. Corpus health: scripts/validate.py exit status over your-life/.
+  3. Corpus health: scripts/validate.py exit status over your-life/ (or --corpus).
   4. Cadence state (report only, never flips the exit code): newest journal,
      review, and coherence artifacts, and which review tier is overdue. Ports
      the overdue.sh / overdue.ps1 "more than one period behind" rule; those
@@ -255,20 +255,23 @@ def check_guard_wiring():
 # Check 3: corpus health
 # ---------------------------------------------------------------------------
 
-def check_corpus_health():
+def check_corpus_health(corpus="your-life"):
     r = Result(3, "corpus health")
     validate = KIT_ROOT / "scripts" / "validate.py"
     if not validate.is_file():
         r.fail("scripts/validate.py is missing", "restore scripts/validate.py from the kit.")
         return r
-    rc, out, _err = run_python([str(validate), "--corpus", "your-life"])
+    rc, out, _err = run_python([str(validate), "--corpus", str(corpus)])
     tail = out.strip().splitlines()[-1] if out.strip() else ""
     if rc == 0:
-        r.ok(f"scripts/validate.py passes over your-life/. {tail}")
+        r.ok(f"scripts/validate.py passes over {corpus}/. {tail}")
     else:
+        command = "python scripts/validate.py"
+        if str(corpus) != "your-life":
+            command += f' --corpus "{corpus}"'
         r.fail(
-            f"scripts/validate.py reports errors over your-life/. {tail}",
-            "run 'python scripts/validate.py' and fix the reported errors.",
+            f"scripts/validate.py reports errors over {corpus}/. {tail}",
+            f"run '{command}' and fix the reported errors.",
         )
     return r
 
@@ -369,11 +372,12 @@ def _overdue_tiers(latest, today):
     return overdue
 
 
-def check_cadence(today):
+def check_cadence(today, corpus=None):
     """Report-only. Returns (Result, cadence_state dict). Never fails."""
     r = Result(4, "cadence state")
-    reviews_dir = KIT_ROOT / "your-life" / "reviews"
-    journal_dir = KIT_ROOT / "your-life" / "journal"
+    corpus = Path(corpus) if corpus is not None else KIT_ROOT / "your-life"
+    reviews_dir = corpus / "reviews"
+    journal_dir = corpus / "journal"
     coherence_dir = reviews_dir / "coherence"
 
     latest = _newest_review_tokens(reviews_dir)
@@ -414,28 +418,37 @@ def check_cadence(today):
 SITTING_HEADER_RE = re.compile(r"^##\s+Sitting\s+(\d+)\b(.*)$")
 
 
-def _corpus_has_content():
-    """True if any authored corpus artifact exists under your-life/ (anything
-    beyond committed structure and the foundation-progress checklist)."""
-    corpus = KIT_ROOT / "your-life"
+def _corpus_has_content(corpus=None):
+    """True if authored content exists beyond structure, progress, and staging.
+
+    Candidates are uncommitted suggestions, and the privacy hatch is never
+    traversed or used to infer the human's progress.
+    """
+    corpus = Path(corpus) if corpus is not None else KIT_ROOT / "your-life"
     if not corpus.is_dir():
         return False
     progress = corpus / "reflections" / "foundation-progress.md"
-    for path in corpus.rglob("*.md"):
-        if path.name in STRUCTURE_NAMES:
-            continue
-        if path == progress:
-            continue
-        return True
+    for directory, children, files in os.walk(corpus):
+        directory = Path(directory)
+        children[:] = [
+            name for name in children
+            if name != ".sensitive" and not (directory == corpus and name == "candidates")
+        ]
+        for name in files:
+            path = directory / name
+            if path.suffix != ".md" or name in STRUCTURE_NAMES or path == progress:
+                continue
+            return True
     return False
 
 
-def _next_incomplete_sitting():
+def _next_incomplete_sitting(corpus=None):
     """Lowest-numbered sitting not yet completed in foundation-progress.md, or
     None if the file is absent or all sittings are complete. Mirrors the
     foundation skill's resume read: a sitting block with 'Completed:' is done;
     'Not yet run' (or no Completed line) is pending."""
-    progress = KIT_ROOT / "your-life" / "reflections" / "foundation-progress.md"
+    corpus = Path(corpus) if corpus is not None else KIT_ROOT / "your-life"
+    progress = corpus / "reflections" / "foundation-progress.md"
     if not progress.is_file():
         return None, False  # (next sitting, file present)
     text = progress.read_text(encoding="utf-8-sig")
@@ -470,9 +483,9 @@ def _sitting_phase_label(number):
     }.get(number, f"sitting {number}")
 
 
-def next_step(cadence_state):
+def next_step(cadence_state, corpus=None):
     """Return the single next-step line (no PASS/FAIL; guidance only)."""
-    next_sitting, progress_present = _next_incomplete_sitting()
+    next_sitting, progress_present = _next_incomplete_sitting(corpus)
 
     if progress_present:
         if next_sitting is not None:
@@ -481,7 +494,7 @@ def next_step(cadence_state):
         return _loop_step(cadence_state)
 
     # No progress file.
-    if _corpus_has_content():
+    if _corpus_has_content(corpus):
         return _loop_step(cadence_state)
     return (
         "Next: run /foundation (sitting 1) to seed your stack, or /adopt if you "
@@ -507,10 +520,20 @@ def main():
         description="SpecSelf doctor: prove the kit's privacy guarantees hold and show the next step."
     )
     parser.add_argument(
+        "--corpus", default="your-life",
+        help="corpus for health, cadence, and next-step checks (default: your-life; "
+             "relative paths are based at the kit root). Privacy checks always cover the kit.",
+    )
+    parser.add_argument(
         "--today", default=None,
         help="override today's date (YYYY-MM-DD) for deterministic cadence checks; default date.today().",
     )
     args = parser.parse_args()
+
+    corpus = KIT_ROOT / args.corpus
+    if ".sensitive" in corpus.parts or ".sensitive" in corpus.resolve().parts:
+        print("ERROR: .sensitive/ is a private escape hatch and cannot be a corpus")
+        return 1
 
     if args.today:
         try:
@@ -524,8 +547,8 @@ def main():
     print(f"SpecSelf doctor ({KIT_ROOT.name})")
     print("")
 
-    guarantees = [check_privacy(), check_guard_wiring(), check_corpus_health()]
-    cadence_result, cadence_state = check_cadence(today)
+    guarantees = [check_privacy(), check_guard_wiring(), check_corpus_health(args.corpus)]
+    cadence_result, cadence_state = check_cadence(today, corpus)
 
     for r in guarantees:
         for line in r.render():
@@ -534,7 +557,7 @@ def main():
         print(line)
 
     print("")
-    print(next_step(cadence_state))
+    print(next_step(cadence_state, corpus))
     print("")
 
     failed = [r for r in guarantees if not r.passed]

@@ -13,9 +13,10 @@ What recurred — across the weekly reviews, the journal, the evidence files. Th
 themes you couldn't see at weekly scale.
 
 ## Candidate principles
-Principles the month's evidence suggests. For each: the evidence behind it, a
-confidence rating, and a falsification criterion. The Skeptic pressures each one;
-borrowed-sounding rules get sent back. **Promote none without your sign-off.**
+Link to the principle drafts under `your-life/candidates/YYYY-MM-DD/`. Keep the
+proposed wording, supporting evidence, confidence rating, and falsification
+criterion in each staged file. The Skeptic pressures each one; borrowed-sounding
+rules get sent back. **Promote none without your sign-off.**
 
 ## Full-stack coherence
 A deeper pass than weekly: are goals still serving the vision? Is any area

@@ -27,8 +27,9 @@ Run the six checks from `steering/coherence.md`. Record the findings:
 - Drift (revealed/aspirational): 
 
 ## Candidates (you decide)
-Clearly-labeled candidate principles/habits/edits the agent surfaced. Accept,
-rewrite, or reject each — none are committed here.
+Link to candidate principle, goal, habit, or evidence-link drafts under
+`your-life/candidates/YYYY-MM-DD/`; keep their proposed text in those files.
+Accept, rewrite, or reject each — linking a draft here does not promote it.
 
 ## The one question
 The single sharpest tension to carry into next week.

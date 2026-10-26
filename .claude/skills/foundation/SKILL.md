@@ -14,6 +14,14 @@ cadence, privacy, tone). Then check `your-life/`: this session is for a
 near-empty corpus; if a full stack already exists, prefer `annual` (a
 re-derivation), not this.
 
+For proposed principles, goals, habits, and evidence links, use
+`templates/candidate.md` only at `your-life/candidates/YYYY-MM-DD/<slug>.md`.
+Follow `AGENTS.md` § Candidate staging and local history: keep `status: draft`
+and nonempty `source_entries`, `persona`, and `session_id`. Name the session and
+specific `question_id` responses as sources. The type templates below guide
+the proposed content; their active-artifact frontmatter does not replace the
+candidate schema.
+
 ## Default flow: four short sittings across week one
 
 The 20 questions split into four sittings on the phase boundaries. Each sitting
@@ -67,7 +75,7 @@ Started: <YYYY-MM-DD>
 ## Sitting 1, Operating System + Load-Bearing Values (phases 1-2)
 - Completed: <YYYY-MM-DD>
 - Questions answered: INT-OS-001, INT-OS-002, INT-OS-003, INT-LV-001, INT-LV-002, INT-LV-003
-- Candidates drafted: your-life/principles/<domain>/<slug>.md, ...
+- Candidates drafted: your-life/candidates/<YYYY-MM-DD>/<slug>.md, ...
 - Next: sitting 2 (Life Chapters + Domain Audit)
 
 ## Sitting 2, Life Chapters + Domain Audit (phases 3-4)
@@ -95,14 +103,15 @@ the progress file.
 ### Sitting 1, Operating System + Load-Bearing Values (phases 1-2)
 
 Interview INT-OS-001..003 and INT-LV-001..003. Then draft **1-3 candidate
-revealed principles** in the Journalist lens, hydrating `templates/principle.md`
-into `your-life/principles/<domain>/`.
+revealed principles** in the Journalist lens, using `templates/principle.md`
+to guide the proposed content in dated `templates/candidate.md` files.
 
 - A `revealed` candidate must cite at least one concrete story from these phases
   as its Evidence, naming the `question_id`s. State it as an actionable rule
   ("when X, I do Y, even when it costs Z").
 - A stated value with no story behind it is never a `revealed` candidate; it
-  goes to `your-life/aspirational.md`, tagged `aspirational`. Protect that gap.
+  stays staged with proposed `kind: aspirational`. Only human promotion places
+  it in `your-life/aspirational.md`. Protect that gap.
 - The principle template's falsification section is mandatory (ADR-009 Decision
   3), but its raw material is phase 5, which arrives in sitting 3. Draft each
   principle with a placeholder falsification note ("falsifier to be set in
@@ -139,8 +148,9 @@ sitting-1 principles and surfaces habits and the drop list.
 
 Interview INT-FM-001..003 and INT-EO-001..003. Then:
 
-- **Set the falsification clauses.** Revisit the candidate principles drafted in
-  sitting 1 (find them via the progress file) and fill each one's mandatory
+- **Set the falsification clauses.** Revisit the staged candidate principles from
+  sitting 1 (find them via the progress file), cite the new responses in
+  `source_entries`, and fill each one's mandatory
   falsification section from these failure-mode answers: the human's own named
   failure pattern is usually the falsifier ("this principle is false if
   <failure mode> shows up in <context> again"). Do not draft fresh principles in
@@ -150,7 +160,8 @@ Interview INT-FM-001..003 and INT-EO-001..003. Then:
 - **Sharpen the areas.** Add slippage tells (from Failure Modes) and best-work
   standards (from Energy) to the sitting-2 area candidates.
 - **Habit candidates.** From Failure Modes and Energy, the counter-patterns
-  worth tracking. Hydrate `templates/habit.md`. Bound: at most 3 habits.
+  worth tracking. Use `templates/habit.md` to guide the proposed content in
+  dated candidate files. Bound: at most 3 habits.
 - **The DROP list.** The INT-EO-003 answer (a commitment honored out of
   momentum, not choice) is a candidate to DROP, not a project to add. Record it
   for the capacity read in sitting 4's close; never draft it as new work.
@@ -166,23 +177,26 @@ Interview INT-TR-001..002. Then assemble the foundation:
   (sitting 2) and the Trajectory answers: finite outcomes for 6-24 months, each
   with a falsifiable success criterion (a date and a measure) and a `serves:`
   link up to the vision or a principle. Question any goal that serves nothing
-  above it. Hydrate `templates/goal.md`. Bound: 2-4 goals.
+  above it. Use `templates/goal.md` to guide the proposed content in dated
+  candidate files. Bound: 2-4 goals.
 - **Project candidates** (H1) from Failure Modes and Energy: what the human is
   driving right now that ladders up to those goals. Hydrate
   `templates/project.md`. Bound: at most 3 projects.
 - **Complete the vision** with the Trajectory answers: tighten the sitting-2
   draft so the five-year portrait reflects the shot the human named.
-- **Aspirational entries** for the Trajectory wants with no backing story.
+- **Aspirational entries** for the Trajectory wants with no backing story,
+  staged as principle candidates with proposed `kind: aspirational`.
 
 Then run the close below.
 
 ## Close: first coherence pass
 
 At the end of sitting 4 (or the single session), run the six checks from
-`steering/coherence.md` against everything drafted: does every project serve a
+`steering/coherence.md` against the committed corpus: does every project serve a
 goal, does every goal serve the vision or a principle, is any area already
-starved, are there too many active projects to actually move. Include the DROP
-list from INT-EO-003 in the capacity read. End with the ONE sharpest question
+starved, are there too many active projects to actually move. Discuss staged
+links as questions; they do not satisfy corpus references or change findings.
+Include the DROP list from INT-EO-003 in the capacity read. End with the ONE sharpest question
 the synthesis found; tell the human to carry it to their first weekly review
 (day 7), not resolve it tonight. Mark every phase complete in the progress file.
 
@@ -221,8 +235,9 @@ stop the synthesis from flattering the human with volume, not to fill a quota.
 
 ## The never-authors rule
 
-Write every proposed principle, goal, vision, area, project, or habit as a
-`<!-- CANDIDATE - edit or delete -->` block, never committed text. Every
+Stage proposed principles, goals, habits, and evidence links under the dated
+candidate path above. Keep vision, area, and project proposals as
+`<!-- CANDIDATE - edit or delete -->` blocks, never committed text. Every
 candidate is something the human rewrites in their own words or discards; the
 agent surfaces and drafts, the human edits and commits. Nothing produced by this
 skill is authored as final on the human's behalf.

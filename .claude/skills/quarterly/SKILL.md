@@ -22,5 +22,8 @@ Run the SpecSelf **quarterly** tier as **Skeptic + Forensic-Auditor**. Honor `AG
    `Evidence` for a principle.
 4. Hydrate `templates/review-quarterly.md` to `your-life/reviews/`.
 
-Recommend every status transition with its evidence; make none. Candidates go in
-`<!-- CANDIDATE - edit or delete -->` blocks. The human confirms each transition.
+Recommend every status transition with its evidence; make none. Stage proposed
+principles, goals, habits, and evidence links only under
+`your-life/candidates/YYYY-MM-DD/` using `templates/candidate.md` and the
+provenance rules in `AGENTS.md` § Candidate staging and local history. The review
+links to these drafts. The human confirms each transition.

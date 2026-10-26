@@ -108,7 +108,7 @@ can cite, which is the method working as designed.
 | Day 1 | Sitting 1 (`/foundation`, phases 1-2), then your first `/daily` | 1-3 candidate principles; tomorrow's daily wired |
 | Days 2-6 | `/daily` every day (about 2 minutes) | a week of raw evidence building up |
 | Across the week | Sittings 2, 3, 4 whenever you have 15-20 minutes | vision, areas, falsifiers, habits, the drop list, goals |
-| Day 7 | Your first `/weekly` | the coherence check run over everything so far |
+| Day 7 | Your first `/weekly` | the coherence check run over your committed stack |
 
 Re-invoke `/foundation` for each sitting. It reads
 `your-life/reflections/foundation-progress.md`, tells you which sittings are done,
@@ -172,7 +172,8 @@ actionable rules ("when X, I do Y, even when it costs Z"), each citing the
 specific answers it drew from. Sitting 1 drafts the first 1 to 3; sitting 3 sets
 each principle's mandatory falsifier from your failure-mode answers. You rewrite
 them in your words. Anything you *want* to be true but cannot back with a story
-goes in `aspirational.md`, tagged `aspirational`. **Protect that gap.**
+stays a staged principle candidate with proposed `kind: aspirational`; only your
+promotion puts it in `aspirational.md`. **Protect that gap.**
 
 ### Pass 2, Vision (H4)
 Drawing on your Life Chapters and Trajectory answers: "Where is this person in
@@ -201,13 +202,18 @@ answer about momentum-only commitments becomes a **drop** candidate here, not a
 project to add. Capacity is a coherence constraint, not a wish list.
 
 Every candidate the agent drafts is exactly that: a candidate. It never authors
-your record; you edit or discard everything it proposes.
+your record; you edit or discard everything it proposes. Principle, goal, habit,
+and evidence-link drafts live only in `your-life/candidates/YYYY-MM-DD/`, using
+`templates/candidate.md` with `source_entries`, `persona`, and `session_id`.
+Reviews link to these drafts. They become part of your committed corpus only
+when you initiate promotion; see [the staging contract](AGENTS.md#candidate-staging-and-local-history).
 
 ## Close, first coherence pass
 
 At the end of the last sitting (day 7's `/weekly` picks this up if you did not run
 it yourself), run the [coherence check](steering/coherence.md) on what you
-created:
+have committed. Discuss staged relationships as questions; they do not count
+as current corpus links:
 
 - Does every project serve a goal? Every goal serve the vision or a principle?
 - Is any area already starved? Is any goal already fighting a principle?
