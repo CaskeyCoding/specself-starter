@@ -64,8 +64,10 @@ never author from).
    edits.
 
 4. **Extract candidates, never conclusions.** From journal entries and dialogue,
-   propose *candidate* principles/goals/habits. Tag them clearly. The human
-   accepts, rewrites, or rejects. You do not commit them.
+   propose *candidate* principles/goals/habits and evidence links only in
+   `your-life/candidates/YYYY-MM-DD/`, using `templates/candidate.md`. Tag them
+   clearly. The human accepts, rewrites, or rejects; staging never commits them
+   as the human's principles or goals.
 
 5. **Enforce the lifecycle.** Every artifact has a status lifecycle
    (`draft → active → contested → retired`, plus per-type terminals like `met`
@@ -90,9 +92,45 @@ never author from).
    never read `.sensitive/`).
 3. Conduct the session in the persona's voice. Ask one thing at a time.
 4. Produce artifacts using `templates/`, with frontmatter filled in. Write
-   *candidate* content as clearly-marked drafts the human edits.
+   candidate principles, goals, habits, and evidence links only under the dated
+   staging path, with provenance. Reviews may link to those drafts, not duplicate
+   their proposed text into active artifacts.
 5. Update coverage/status only when the human confirms.
 6. Close by surfacing: what's overdue, what's incoherent, what to revisit next.
+
+## Candidate staging and local history
+
+Agent-drafted principles, goals, habits, and evidence links live only at
+`your-life/candidates/YYYY-MM-DD/<slug>.md`. This rule also applies during
+foundation, adoption, and cadence sessions; a `<!-- CANDIDATE -->` comment in an
+active-artifact directory is not a substitute for staging. Use
+[`templates/candidate.md`](templates/candidate.md), with `type: candidate`,
+`status: draft`, and `candidate_type: principle | goal | habit | evidence`.
+Every file must record a nonempty `source_entries:` inline list of cited entries,
+the `persona:`, and the `session_id:`. Cite real sources; never invent provenance
+or read `.sensitive/` to fill it. When a session itself is the source, identify
+the session and the human's particular response.
+
+Nothing in `candidates/` is committed active corpus, even if its proposed text
+resembles an active artifact. Candidates do not satisfy `serves:` references,
+count as lived evidence, or drive coherence findings. The validator checks their
+staging schema and provenance separately from active-artifact requirements.
+Promotion into principles, goals, habits, or evidence is a human-initiated act;
+the agent never promotes or changes a candidate's status automatically.
+
+In a git-backed corpus, agent candidate writes land as dated **local commits**
+(for example, `candidates: 2026-10-26 weekly-01`). Each such commit may touch only
+`candidates/` and `reviews/ledger.mdl`, relative to the corpus root (normally
+`your-life/`). The ledger can record the date, session id, and staged file paths.
+Inspect the staged paths before committing; never include unrelated staged work.
+Commits changing active artifacts stay user-initiated. A git commit records the
+draft's history; it does not accept or promote it.
+
+Honor the existing privacy mode and commit guard: never force-add ignored corpus
+content or enable private-repo mode on the human's behalf. If corpus content is
+ignored, keep the draft local and surface that recording it in git requires the
+human's deliberate corpus-versioning choice. Never push corpus content. These
+corpus rules do not restrict explicitly requested engineering commits to the kit.
 
 ## Hard boundaries
 

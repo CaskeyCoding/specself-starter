@@ -10,8 +10,8 @@ does not have to author a foundation from scratch. Synthesize in the
 
 **Read first:** `AGENTS.md` (the one rule and the hard boundaries), then
 `steering/` (methodology, privacy, tone), then the `templates/` you will write
-into (`principle.md`, `aspirational.md`, `area.md`, `goal.md`, `project.md`,
-`habit.md`).
+into (`candidate.md`, `principle.md`, `aspirational.md`, `area.md`, `goal.md`,
+`project.md`, `habit.md`).
 
 Adopt does not interview. It reads what already exists and proposes candidates.
 The stories behind a value rarely live in notes, so adopt is a head start, not a
@@ -24,9 +24,11 @@ replacement for the foundation sitting. Say so in the closing report.
 - **The source directory is READ-ONLY, always.** List, stat, and read its files.
   Never write, edit, move, rename, or delete anything inside it. It is not yours
   to change.
-- **You write only into `your-life/`.** Every candidate artifact lands under
-  `your-life/`, through the templates, as a `<!-- CANDIDATE - edit or delete -->`
-  block. That is the one place adopt writes.
+- **You write only into `your-life/`.** Stage proposed principles, goals,
+  habits, and evidence links only at `your-life/candidates/YYYY-MM-DD/<slug>.md`
+  using `templates/candidate.md`. Follow `AGENTS.md` § Candidate staging and
+  local history, including nonempty `source_entries`, `persona`, and `session_id`.
+  Area and project proposals keep their matching templates and candidate blocks.
 - **Never read `your-life/.sensitive/`** (a standing boundary), and never read
   any source path the human marked off-limits.
 - **Never copy the notes wholesale.** Adopt drafts a bounded set of candidates
@@ -52,12 +54,14 @@ replacement for the foundation sitting. Say so in the closing report.
    principle be `revealed`; a file's modified timestamp is provenance for the
    citation, not evidence of when something happened.
 
-4. **Draft candidates through the templates.** Write each candidate into
-   `your-life/` as a `<!-- CANDIDATE - edit or delete -->` block, hydrating the
-   matching template, and cite its source in the block (the file path, plus a
-   date where one is derivable from the content). Draft, in bounds:
+4. **Draft candidates through the templates.** For principles, goals, habits,
+   and evidence links, keep the candidate schema and `status: draft` in the
+   dated staging path above; the matching templates below guide the proposed
+   content. For areas and projects, hydrate their templates with clearly marked
+   candidate blocks. Cite each source (the file path, plus a date where one is
+   derivable from the content). Draft, in bounds:
 
-   | Candidate | Template | Where it comes from | Bound |
+   | Candidate | Content guide | Where it comes from | Bound |
    |---|---|---|---|
    | Revealed principles | `templates/principle.md` | recurring stances the notes show dated evidence for | 3-5 |
    | Aspirational entries | `templates/aspirational.md` | stances the notes state but do not back with a dated instance | 0-3 |
@@ -73,8 +77,9 @@ replacement for the foundation sitting. Say so in the closing report.
    - **`revealed` requires a dated instance from the notes.** A principle
      candidate is `kind: revealed` only when you can cite at least one concrete,
      dated instance from the sampled notes under its `## Evidence` section.
-     Without that, it is not revealed. Propose it for `aspirational.md` instead,
-     with its promotion bar, or skip it. Never invent a date to clear the bar,
+     Without that, it is not revealed. Stage it with proposed `kind: aspirational`
+     and a promotion bar, or skip it; only human promotion puts it in
+     `aspirational.md`. Never invent a date to clear the bar,
      and never collapse the gap between who the notes show the human to be and
      who they want to be.
    - **Do not draft a vision.** The five-year portrait is exactly what notes do
@@ -115,8 +120,9 @@ notes?" section.
 
 ## The never-authors rule
 
-Write every proposed principle, area, goal, project, or habit as a
-`<!-- CANDIDATE - edit or delete -->` block, never committed text. Each candidate
+Stage proposed principles, goals, habits, and evidence links under the dated
+candidate path above. Keep area and project proposals as
+`<!-- CANDIDATE - edit or delete -->` blocks, never committed text. Each candidate
 is something the human rewrites in their own words or discards; adopt surfaces and
 drafts from the notes, the human edits and commits. Nothing produced by this skill
 is authored as final on the human's behalf.

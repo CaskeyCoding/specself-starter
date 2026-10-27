@@ -21,5 +21,8 @@ Run the SpecSelf **monthly** tier as **Skeptic + Therapist**. Honor `AGENTS.md`.
    `Evidence` for a principle.
 4. Hydrate `templates/review-monthly.md` to `your-life/reviews/`.
 
-Write candidates as `<!-- CANDIDATE - edit or delete -->` blocks. Promote nothing
-without the human's sign-off; recommend transitions with evidence, make none.
+Stage proposed principles, goals, habits, and evidence links only under
+`your-life/candidates/YYYY-MM-DD/` using `templates/candidate.md` and the
+provenance rules in `AGENTS.md` § Candidate staging and local history. The review
+links to these drafts. Promote nothing without the human's sign-off; recommend
+transitions with evidence, make none.

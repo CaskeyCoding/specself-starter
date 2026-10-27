@@ -23,7 +23,7 @@ Then load the human's current state from `your-life/` as the tier requires.
 
 The reflection tiers ship as skills in [`.claude/skills/`](.claude/skills/). Invoke
 one by name; each reads `steering/` first, hydrates the matching `templates/` file,
-runs the coherence check on weekly+, and writes only `<!-- CANDIDATE -->` drafts
+runs the coherence check on weekly+, and stages proposals under the candidate contract
 (see [`.claude/skills/README.md`](.claude/skills/README.md)).
 
 | Skill | When | Lead lens |
@@ -80,9 +80,10 @@ them:
 
 - The privacy guard above now **enforces** "never push the corpus" (AGENTS.md hard
   boundary) at commit time, so it no longer depends on remembering.
-- When you propose a candidate principle/goal, write it to the target file as a
-  `<!-- CANDIDATE - edit or delete -->` block, never as committed text. That is how
-  AGENTS.md's "draft candidates, never author" rule looks in a file.
+- For candidate principles, goals, habits, and evidence links, use
+  `templates/candidate.md` at `your-life/candidates/YYYY-MM-DD/<slug>.md`.
+  Follow [`AGENTS.md` § Candidate staging and local history](AGENTS.md#candidate-staging-and-local-history)
+  for provenance and local commits; reviews link to drafts rather than duplicate them.
 
 `your-life/.sensitive/` is off-limits (AGENTS.md): do not read or grep it, even if
 asked to "search everything."

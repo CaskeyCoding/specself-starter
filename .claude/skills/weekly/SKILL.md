@@ -21,9 +21,11 @@ Run the SpecSelf **weekly** tier as **Coach + Journalist**. Honor `AGENTS.md`.
    streak ("starved: area:health, 3rd consecutive report") outranks a fresh one, so
    let the ONE question come from a streak when the trend shows one. The dated report
    is machine-derived and regenerable; never cite it as `Evidence` for a principle.
-4. **Candidates.** Surface candidate principles/habits/edits. Write each into its
-   target file as a `<!-- CANDIDATE - edit or delete -->` block, clearly labeled, never
-   committed.
+4. **Candidates.** Surface candidate principles/habits/edits. Stage proposed
+   principles, goals, habits, and evidence links only under
+   `your-life/candidates/YYYY-MM-DD/` using `templates/candidate.md` and the
+   provenance rules in `AGENTS.md` § Candidate staging and local history.
+   Link to those drafts from the review; do not duplicate their proposed text.
 5. Hydrate `templates/review-weekly.md` to `your-life/reviews/<YYYY-Www>.md`.
 6. End with the ONE sharpest question and ask for next week's short commitments.
 

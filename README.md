@@ -128,6 +128,56 @@ runs the schema validator and a corpus-leak tripwire on every push.
 Your content goes in `your-life/`, which is **gitignored by default**. Commit the
 *structure*, keep the *content* private. See [`steering/privacy.md`](steering/privacy.md).
 
+## Optional command line wrapper
+
+With Python 3.11 or newer, install from this checkout (preferably in a virtual
+environment), then run the four commands from the kit directory:
+
+```bash
+python -m pip install --no-deps -e .
+specself --help
+python -m specself doctor examples/sam-rivers
+python -m specself coherence examples/sam-rivers
+python -m specself capture examples/sam-rivers --dry-run
+python -m specself review examples/sam-rivers --tier weekly --dry-run
+```
+
+`specself` and `python -m specself` expose the same commands. Each accepts a
+positional corpus path or `--corpus PATH`, defaulting to `your-life`. Doctor and
+coherence delegate to the existing scripts; their original commands remain
+available. Explicit paths are relative to the current directory; doctor's
+omitted corpus retains its kit-relative default. Doctor checks the kit's privacy
+wiring and the selected corpus's health and cadence. Coherence retains its
+existing options, including the explicit `--write DIR` option for persisted
+reports.
+
+Capture and review print the existing session instructions, templates, and
+cadence contract. They are read-only previews, with or without `--dry-run`, and
+do not conduct a session or save answers. Review defaults to weekly and supports
+daily, weekly, monthly, quarterly, and annual tiers. Use the named session with
+your agent to reflect and record your own responses.
+
+The installed wrapper uses scripts and markdown from a kit checkout, located
+through the corpus path, current directory, or editable installation. It has no
+runtime dependencies; setuptools is used only to build/install the package.
+Run `python -m unittest discover -s tests -v` for the local acceptance checks.
+
+## Candidate staging
+
+Agent-drafted principles, goals, habits, and evidence links go only in
+`your-life/candidates/YYYY-MM-DD/<slug>.md`, using
+[`templates/candidate.md`](templates/candidate.md). Each draft records its source
+entries, persona, and session id. Reviews link to these drafts; they never count
+as active corpus or lived evidence. The human initiates any promotion into the
+committed stack.
+
+`python scripts/validate.py` checks staged provenance separately from active
+artifacts. Missing provenance fails validation. In deliberately versioned
+corpora, dated local agent commits are limited to `candidates/` and
+`reviews/ledger.mdl`; active-artifact commits stay user-initiated. The default
+privacy rules still ignore draft content. See
+[`AGENTS.md`](AGENTS.md#candidate-staging-and-local-history) for the full boundary.
+
 ## What's in the box
 
 ```

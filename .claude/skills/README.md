@@ -22,8 +22,10 @@ Every skill:
 - hydrates the matching `templates/` file;
 - runs the six-check coherence pass from `steering/coherence.md` on weekly+ (and the
   `foundation` close);
-- writes candidates as `<!-- CANDIDATE - edit or delete -->` blocks and never promotes
-  them. The human authors and commits.
+- stages candidate principles, goals, habits, and evidence links only under
+  `your-life/candidates/YYYY-MM-DD/` using `templates/candidate.md`, with nonempty
+  `source_entries`, `persona`, and `session_id`; reviews link to these drafts.
+  Follow `AGENTS.md` § Candidate staging and local history. The human promotes them.
 
 Delete `.claude/` entirely and the system still runs from `AGENTS.md` — these are
 accelerators, never dependencies.

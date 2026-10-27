@@ -14,8 +14,9 @@ Run the SpecSelf **annual** tier as **Future-Self + Biographer + Stoic**. Honor 
    story).
 2. **Then diff** against the prior set. What you cannot re-derive is a candidate for
    `retired`. The diff between this year and last is the year's real report.
-3. Run the six-check coherence pass from `steering/coherence.md` across the rewritten
-   stack; produce the ranked report. **Persist it:**
+3. Run the six-check coherence pass from `steering/coherence.md` across the committed
+   stack; discuss staged changes as questions, not current findings. Produce the
+   ranked report. **Persist it:**
    `python scripts/coherence.py your-life --write your-life/reviews/coherence --tier annual`.
    Read the report's **Trend** section back into the wrap: a finding on a streak
    outranks a fresh one, so let the ONE question come from a streak when the trend
@@ -23,5 +24,8 @@ Run the SpecSelf **annual** tier as **Future-Self + Biographer + Stoic**. Honor 
    `Evidence` for a principle.
 4. Hydrate `templates/review-annual.md` to `your-life/reviews/`.
 
-Write the rewrite and retirements as `<!-- CANDIDATE - edit or delete -->` blocks;
-recommend retirements with evidence, make none. The human authors the final set.
+Stage the principle rewrite and any proposed goals, habits, or evidence links only
+under `your-life/candidates/YYYY-MM-DD/` using `templates/candidate.md` and the
+provenance rules in `AGENTS.md` § Candidate staging and local history. The review
+links to these drafts. Recommend retirements with evidence, make none. The human
+authors the final set.

@@ -5,9 +5,12 @@ Stdlib only. Infers each artifact's type from its path, parses the simple
 frontmatter subset the templates use (key: value, inline [a, b] lists), and
 checks required fields, status enums, serves:/supersedes:/related: refs,
 revealed-principle evidence, goal success criteria, and ended_on vs a
-terminal status. Errors exit 1; warnings print but exit 0.
+terminal status. Staged candidates have separate draft/provenance checks and
+never participate in active-artifact checks. Errors exit 1; warnings print but
+exit 0.
 """
 import argparse
+import json
 import re
 import sys
 from datetime import date, datetime
@@ -49,6 +52,40 @@ WARN_EMPTY_SERVES_TYPES = {"goal", "project", "habit"}
 SUCCESS_CRITERIA_HEADING = "## Success criteria (falsifiable)"
 EVIDENCE_HEADING = "## Evidence"
 STALE_DAYS = 90
+CANDIDATE_TYPES = {"principle", "goal", "habit", "evidence"}
+CANDIDATE_LOCATION = "candidates/YYYY-MM-DD/<slug>.md"
+# Candidate values support plain text, quoted text, and flat inline lists.
+# Quoted text may contain punctuation that would otherwise delimit a value.
+CANDIDATE_SCALAR = r'''(?:"(?:[^"\\]|\\.)*"|'(?:[^']|'')*'|[^\s\[\]{},'"#][^\[\]{},'"#]*)'''
+CANDIDATE_VALUE_RE = re.compile(
+    rf"(?P<value>\[\s*(?:{CANDIDATE_SCALAR}(?:\s*,\s*{CANDIDATE_SCALAR})*)?\s*\]|{CANDIDATE_SCALAR})\s*(?:#.*)?"
+)
+
+
+def parse_candidate_value(value):
+    """Parse the supported flat subset without repairing malformed syntax."""
+    match = CANDIDATE_VALUE_RE.fullmatch(value.strip())
+    if match is None:
+        return None
+    value = match.group("value").strip()
+    is_list = value.startswith("[")
+    tokens = re.findall(CANDIDATE_SCALAR, value[1:-1]) if is_list else [value]
+    decoded = []
+    for token in tokens:
+        token = token.strip()
+        if token.startswith('"'):
+            try:
+                decoded.append(json.loads(token))
+            except ValueError:
+                return None
+        elif token.startswith("'"):
+            decoded.append(token[1:-1].replace("''", "'"))
+        else:
+            # Mapping/alias/tag syntax is outside this flat text subset.
+            if token[:1] in "&*!|>@`" or re.search(r":(?:\s|$)", token):
+                return None
+            decoded.append(token)
+    return decoded if is_list else decoded[0]
 
 
 def strip_comment(value):
@@ -62,7 +99,7 @@ def strip_comment(value):
     return value
 
 
-def parse_frontmatter(text):
+def parse_frontmatter(text, candidate=False):
     lines = text.splitlines()
     if not lines or lines[0].strip() != "---":
         return {}, text
@@ -77,6 +114,9 @@ def parse_frontmatter(text):
         key = key.strip()
         if not key or not (key[0].isalpha() or key[0] == "_"):
             continue
+        if candidate:
+            fields[key] = parse_candidate_value(value)
+            continue
         value = strip_comment(value).strip()
         if value.startswith("["):
             inner = value if value.endswith("]") else value + "]"
@@ -90,7 +130,13 @@ def parse_frontmatter(text):
 
 def infer_type(rel_path):
     parts = rel_path.parts
-    if ".sensitive" in parts or rel_path.name in ("README.md", ".gitkeep"):
+    if ".sensitive" in parts:
+        return None
+    if parts[0] == "candidates":
+        # Only the staging root's index is structural. A draft named README.md
+        # inside a dated directory must still supply provenance.
+        return None if parts == ("candidates", "README.md") else "candidate"
+    if rel_path.name in ("README.md", ".gitkeep"):
         return None
     # Persisted coherence reports (reviews/coherence/YYYY-MM-DD.md) are
     # machine-derived observations, not a validated artifact type
@@ -129,6 +175,10 @@ def resolve_ref(ref, corpus):
     if ":" not in ref:
         return False
     kind, slug = ref.split(":", 1)
+    # References name artifact basenames, never paths. In particular, an
+    # active artifact cannot use ../ to resolve a staged candidate.
+    if not slug or "/" in slug or "\\" in slug:
+        return False
     if kind in ("goal", "area", "project", "habit"):
         return (corpus / f"{kind}s" / f"{slug}.md").is_file()
     if kind == "principle":
@@ -140,9 +190,49 @@ def resolve_ref(ref, corpus):
     return False
 
 
+def nonempty_provenance(value):
+    """Require text, excluding blank values and YAML null spellings."""
+    return isinstance(value, str) and value.strip().lower() not in ("", "null", "~")
+
+
+def check_candidate(rel, fields, errors):
+    """Validate staging metadata only; a candidate is not a committed artifact."""
+    loc = str(rel)
+    dated_path = len(rel.parts) == 3 and re.fullmatch(r"\d{4}-\d{2}-\d{2}", rel.parts[1])
+    if dated_path:
+        try:
+            date.fromisoformat(rel.parts[1])
+        except ValueError:
+            dated_path = False
+    if not dated_path:
+        errors.append(f"{loc}: candidate must be staged at {CANDIDATE_LOCATION} with a valid date")
+
+    if fields.get("type") != "candidate":
+        errors.append(f"{loc}: candidate type must be 'candidate'")
+    if fields.get("status") != "draft":
+        errors.append(f"{loc}: candidate status must be 'draft'")
+    candidate_type = fields.get("candidate_type")
+    if not isinstance(candidate_type, str) or candidate_type not in CANDIDATE_TYPES:
+        errors.append(f"{loc}: candidate_type must be principle | goal | habit | evidence")
+
+    sources = fields.get("source_entries")
+    if not isinstance(sources, list) or not sources or not all(nonempty_provenance(s) for s in sources):
+        errors.append(f"{loc}: source_entries must be a nonempty inline list of source names or paths")
+    for key in ("persona", "session_id"):
+        if not nonempty_provenance(fields.get(key)):
+            errors.append(f"{loc}: {key} must be nonempty provenance text")
+
+
 def check_file(path, rel, atype, corpus, today, errors, warnings):
     loc = str(rel)
-    fields, body = parse_frontmatter(path.read_text(encoding="utf-8-sig"))
+    fields, body = parse_frontmatter(
+        path.read_text(encoding="utf-8-sig"), candidate=(atype == "candidate")
+    )
+    if atype == "candidate":
+        check_candidate(rel, fields, errors)
+        return
+    if fields.get("type") == "candidate":
+        errors.append(f"{loc}: candidate must be staged at {CANDIDATE_LOCATION}")
 
     for f in sorted(REQUIRED_FIELDS.get(atype, set())):
         if f not in fields:

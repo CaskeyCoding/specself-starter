@@ -196,6 +196,9 @@ def load_corpus(corpus):
 
 
 def principle_exists(corpus, slug):
+    # Corpus refs use basenames, never paths into staging or another directory.
+    if not slug or "/" in slug or "\\" in slug:
+        return False
     pdir = corpus / "principles"
     return pdir.is_dir() and any(pdir.glob(f"*/{slug}.md"))
 
@@ -218,6 +221,8 @@ def check_orphans(records, corpus):
         for ref in serves:
             if ref.startswith("goal:"):
                 gslug = ref.split(":", 1)[1]
+                if not gslug or "/" in gslug or "\\" in gslug:
+                    continue
                 gpath = corpus / "goals" / f"{gslug}.md"
                 if gpath.is_file():
                     gfields, _ = parse_frontmatter(gpath.read_text(encoding="utf-8-sig"))

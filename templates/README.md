@@ -24,6 +24,42 @@ display title, free text.
 | evidence | `your-life/reflections/evidence/<date>-<slug>.md` | basename |
 | journal entry | `your-life/journal/<YYYY-MM-DD>.md` | `date:` |
 | review | `your-life/reviews/<period>.md` | `period:` |
+| candidate (staging only) | `your-life/candidates/<YYYY-MM-DD>/<slug>.md` | dated path; not a corpus ref |
+
+## Candidate staging
+
+Agents stage proposed principles, goals, habits, and evidence links using
+`templates/candidate.md`, only under `your-life/candidates/YYYY-MM-DD/`.
+The directory date must be a real calendar date in that exact format; files
+live directly inside it. Each file declares:
+
+```yaml
+type: candidate
+status: draft
+candidate_type: principle   # principle | goal | habit | evidence
+source_entries: [journal/2026-10-25.md]
+persona: Coach
+session_id: weekly-2026-10-26
+```
+
+`source_entries` is a nonempty inline list of source names or paths; every
+entry must contain text. Corpus paths are relative to `your-life/`; external
+notes can be named explicitly and need not exist inside the corpus. `persona`
+names the session lens, and `session_id` identifies the originating session.
+Both are required nonempty text. Blank values and YAML null values do not
+provide provenance. Only `candidates/README.md` is a structural index exempt
+from these checks; a `README.md` inside a dated directory is a candidate. An
+evidence candidate proposes a link to an existing source, never a fabricated
+event.
+
+Staged candidates are proposals, never active corpus artifacts. The validator
+checks their placement, draft status, candidate type, and provenance separately;
+it does not require active-artifact fields, evidence sections, success criteria,
+or resolving `serves:` links. Candidates cannot satisfy corpus references and
+do not contribute to coherence counts. An `active` status in staging is an
+error, not promotion. The human accepts, rewrites, or rejects a candidate and
+explicitly authorizes any promotion into the corresponding artifact template.
+Agents never promote candidates or change committed text on their own.
 
 ## References: `serves:` uses `type:slug`
 
@@ -51,6 +87,7 @@ can clear back to active). Per-type enums:
 | habit | `draft \| active \| lapsed \| retired` |
 | decision | `proposed \| accepted \| superseded` |
 | evidence, journal, reviews | none (immutable records) |
+| candidate (staging only) | `draft` only; no automatic lifecycle transition |
 
 Notes:
 
@@ -87,8 +124,12 @@ Decisions are numbered sequentially and zero-padded to three digits, globally
 page: required frontmatter per type, status enum membership, `serves:` /
 `supersedes:` / `related:` refs that resolve, a `kind: revealed` principle
 carrying dated evidence, a goal carrying a success-criteria checkbox, and
-`ended_on` set if and only if the status is terminal. Run it from
-`specself-starter/`:
+`ended_on` set if and only if the status is terminal.
+
+Staged candidates use the separate rules above; missing provenance fails
+validation even though active-artifact checks do not apply to staging.
+
+Run it from `specself-starter/`:
 
 ```bash
 python scripts/validate.py                              # your-life/, the default

@@ -28,3 +28,11 @@ context-bundle.md
 *.log
 .env
 .env.*
+
+# --- Python build and local verification artifacts ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/

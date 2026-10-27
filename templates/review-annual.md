@@ -12,6 +12,8 @@ Half a day. The blank-slate rewrite. Led by Future-Self + Biographer + Stoic.
 Before looking at last year's corpus, re-derive your principles from scratch.
 What do you actually live by, today, written fresh? This is the heart of the
 annual — the corpus you can rebuild from memory is the corpus that's truly yours.
+Stage agent-drafted principles under `your-life/candidates/YYYY-MM-DD/` using
+`templates/candidate.md`; link to them here instead of duplicating their wording.
 
 ## The diff
 Now compare the fresh rewrite against last year's principles. What survived
